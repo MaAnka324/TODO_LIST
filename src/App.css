@@ -1,0 +1,40 @@
+.App {
+  padding: 30px;
+  display: flex;
+}
+
+.App > div {
+  margin-right: 50px;
+}
+
+.todolist {
+  height: max-content;
+  border: 3px solid darkgreen;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: lightcyan;
+}
+
+.task {
+  font-weight: bold;
+}
+
+.task-done {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.active-filter {
+  background-color: darkgreen;
+  font-weight: bold;
+  color: white;
+  border-color: darkgreen;
+}
+
+.filter-btn {
+  background-color: darkseagreen;
+  border-color: darkseagreen;
+  color: white;
+}
+
+

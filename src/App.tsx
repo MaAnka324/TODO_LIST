@@ -11,7 +11,7 @@ export type TodoListType = {
     filter: FilterValueType
 }
 
-type TasksStateType = {
+export type TasksStateType = {
     [todolistId: string]: Array<TaskType>
 }
 
@@ -61,11 +61,7 @@ function App() : JSX.Element{
         }
 
         const tasksForUpdate: Array<TaskType> = tasks[todolistId]
-        // const updatedTasks = [newTask, ...tasksForUpdate]
-        // const copyTasks = {...tasks}
-        // copyTasks[todolistId] = updatedTasks
-        // setTasks(copyTasks)
-        //
+
         setTasks({...tasks,
             [todolistId]: [newTask, ...tasksForUpdate]
         })

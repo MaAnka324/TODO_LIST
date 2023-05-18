@@ -5,6 +5,10 @@ import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import ClearIcon, {HighlightOff} from '@material-ui/icons';
+        import {addTaskAC, changeTitleTaskAC, removeTaskAC, statusTaskAC} from "./state/tasks-reducer";
+        import {useDispatch, useSelector} from "react-redux";
+        import {AppRootState} from "./state/store";
+        import {TasksStateType} from "./AppWithRedux";
 
 type TodoListPropsType = {
     todoListId: string
@@ -12,10 +16,10 @@ type TodoListPropsType = {
     title: string
     tasks: TaskType[]
 
-    removeTask : (taskId: string, todoListId: string) => void
-    addTask: (title:string, todoListId: string) => void
-    changeTaskStatus: (taskId: string, newIsDone: boolean, todoListId: string) => void
-    changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
+    // removeTask : (taskId: string, todoListId: string) => void
+    // addTask: (title:string, todoListId: string) => void
+    // changeTaskStatus: (taskId: string, newIsDone: boolean, todoListId: string) => void
+    // changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
 
     changeTodoListFilter: (filter: FilterValueType, todoListId: string) => void
     removeTodoList: (todolistId: string) => void
@@ -29,26 +33,40 @@ export type TaskType = {
 }
 
 const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
-    // const [title, setTitle] = useState<string>("")
-    // const [error, setError] = useState<boolean>(false)
-    const addTaskInput: RefObject<HTMLInputElement> = useRef(null)
-    console.log(addTaskInput)
-    // const changeLocalTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    //     error && setError(false)
-    //     setTitle((e.currentTarget.value))
-    //     }
-
-    const addTask = (title: string) =>{
-        props.addTask(title, props.todoListId)
+    const dispatch = useDispatch()
+    // const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todoListId ])
+    const removeTask = (taskId: string, todolistId: string) => {
+        const action = removeTaskAC(taskId, todolistId)
+        dispatch(action)
+    }
+    // const addTask = (title: string, todolistId: string) => {
+    //     const action = addTaskAC(title, todolistId)
+    //     dispatch(action)
+    // }
+    const changeTaskStatus = (taskId: string, newIsDone: boolean, todolistId: string) => {
+        const action = statusTaskAC(taskId, newIsDone, todolistId)
+        dispatch(action)
+    }
+    const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
+        const action = changeTitleTaskAC(taskId, newTitle, todoListId)
+        dispatch(action)
     }
 
-    // const userMaxLength = title.length > 15 && <div style={{color: 'hotpink'}}>Task title is to long</div>
-    // const userErrorMessage = error && <div style={{color: 'hotpink'}}>Title is required</div>
+
+
+    const addTaskInput: RefObject<HTMLInputElement> = useRef(null)
+    console.log(addTaskInput)
+
+    // const addTask = (title: string) =>{
+    //     const action = addTaskAC(title, todolistId)
+    //     dispatch(action)
+    // }
+
     const setAllFilterValue = () => props.changeTodoListFilter('All', props.todoListId)
     const setActiveFilterValue = () => props.changeTodoListFilter('Active', props.todoListId)
     const setCompletedFilterValue = () => props.changeTodoListFilter('Completed', props.todoListId)
-
-    const changeTodoListTitle = (title:string) => props.changeTodoListTitle(title, props.todoListId)
+    // const changeTodoListTitle = (title:string) => props.changeTodoListTitle({todlistId: props.todoListId})
+    const changeTodoListTitle = (title:string) => props.changeTodoListTitle(props.todoListId, title)
 
     return (
         <div className={"todolist"}>
@@ -61,23 +79,15 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
                     <HighlightOff/>
                 </IconButton>
             </h3>
-            <AddItemForm maxLengthUserName={15} addItem={addTask}/>
-            {/*<div>*/}
-            {/*    <input*/}
-            {/*        value={title}*/}
-            {/*        placeholder='Please, enter title'*/}
-            {/*        onChange={changeLocalTitle}*/}
-            {/*        onKeyDown={(e)=> e.key  === 'Enter' && addTask()}/>*/}
-            {/*    <button disabled={title.trim().length === 0} onClick={addTask}>+</button>*/}
-            {/*    {userMaxLength}*/}
-            {/*    {userErrorMessage}*/}
-            {/*</div>*/}
+            <AddItemForm maxLengthUserName={15} addItem={(title) => {
+                dispatch(addTaskAC(title, props.todoListId))
+            }}/>
             <TasksList
                 todoListId={props.todoListId}
                 tasks={props.tasks}
-                removeTask={props.removeTask}
-                changeTaskStatus={props.changeTaskStatus}
-                changeTaskTitle={props.changeTaskTitle}
+                removeTask={removeTask}
+                changeTaskStatus={changeTaskStatus}
+                changeTaskTitle={changeTaskTitle}
             />
             <div>
                 <Button

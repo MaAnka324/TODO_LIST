@@ -133,8 +133,6 @@ test('new property with new array should be added when new todolist is added', (
 
 
 
-
-
 test('property with todolist should be deleted', () => {
 
     const startState: TasksStateType = {

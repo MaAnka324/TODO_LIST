@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useCallback, useReducer, useState} from 'react';
 import './App.css';
 import TodoList, {TaskType} from "./TodoList";
 import {v1} from "uuid";
@@ -25,60 +25,65 @@ export type TasksStateType = {
     [todolistId: string]: Array<TaskType>
 }
 
-function AppWithRedux() : JSX.Element{
+const Fake = React.memo((props:any) => {
+    console.log('Fake is called')
+    return <h1>{props.count}</h1>
+})
 
+function AppWithRedux() : JSX.Element{
+    console.log('App is called')
     const dispatch = useDispatch()
     const todoLists = useSelector<AppRootState, Array<TodoListType>>(state => state.todolists)
     const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks)
 
 
-
-
-    const changeTodoListFilter = (filter: FilterValueType, todolistId: string) => {
+    const changeTodoListFilter = useCallback( (filter: FilterValueType, todolistId: string) => {
         const action = changeTodolistFilterAC(todolistId, filter)
         dispatch(action)
-    }
-    const removeTodoList = (todolistId: string) => {
+    }, [dispatch])
+
+    const removeTodoList = useCallback( (todolistId: string) => {
         const action = removeTodolistAC(todolistId)
         dispatch(action)
-    }
-    // {todilistId: value, title}
-    // const changeTodoListTitle = (param: {todolistId: string, title: string }) => {
-    //     debugger
-    //     const action = changeTodolistTitleAC(todoListId, title)
-    //     dispatch(action)
-    // }
-    const changeTodoListTitle = (todoListId: string, title: string) => {
+    }, [dispatch])
+
+    const changeTodoListTitle = useCallback( (todoListId: string, title: string) => {
         const action = changeTodolistTitleAC(todoListId, title)
         dispatch(action)
-    }
-    const addTodolist = (title: string) => {
+    }, [dispatch])
+
+    const addTodolist = useCallback( (title: string) => {
         const action = addTodolistAC(title)
         dispatch(action)
-    }
+    }, [dispatch])
 
 
-    const getFilteredTasks = (tasks:Array<TaskType>, filter: FilterValueType) => {
-
-        switch (filter){
-            case 'Active':
-                return tasks.filter(t => t.isDone === false)
-            case 'Completed':
-                return tasks.filter(t => t.isDone === true)
-            default:
-                return tasks
-        }
-    }
+    // const getFilteredTasks = (tasks:Array<TaskType>, filter: FilterValueType) => {
+    //     switch (filter){
+    //         case 'Active':
+    //             return tasks.filter(t => t.isDone === false)
+    //         case 'Completed':
+    //             return tasks.filter(t => t.isDone === true)
+    //         default:
+    //             return tasks
+    //     }
+    // }
 
     const todoListsComponents = todoLists.map(tl => {
-        const filteredTasks: Array<TaskType> = getFilteredTasks(tasks[tl.id], tl.filter)
+        // const filteredTasks: Array<TaskType> = getFilteredTasks(tasks[tl.id], tl.filter)
+        let allTodolistTasks = tasks[tl.id]
+        let tasksForTodolist = allTodolistTasks
+
+
+
 
         return (
             <TodoList
                 key={tl.id}
                 todoListId={tl.id}
                 title={tl.title}
-                tasks={filteredTasks}
+                // tasks={filteredTasks}
+                tasks={tasksForTodolist}
                 filter={tl.filter}
 
                 // addTask={addTask}
@@ -97,6 +102,7 @@ function AppWithRedux() : JSX.Element{
         <div className="App">
             <AddItemForm maxLengthUserName={15} addItem={addTodolist}/>
             {todoListsComponents}
+            <Fake count={10}/>
         </div>
     )
 }

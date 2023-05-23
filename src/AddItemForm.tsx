@@ -7,10 +7,11 @@ type AddItemFormType = {
     addItem: (title: string) => void
 }
 
-const AddItemForm: FC<AddItemFormType> = ({
+const AddItemForm: FC<AddItemFormType> =  React.memo( ({
     maxLengthUserName,
     addItem
                                           }) => {
+    console.log('AddItemForm is called')
 
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<boolean>(false)
@@ -39,6 +40,8 @@ const AddItemForm: FC<AddItemFormType> = ({
 
     const isAddBtnDisable = !title.length || isUserMessageToLong || error
 
+
+
     return (
         <div>
             <input
@@ -61,6 +64,6 @@ const AddItemForm: FC<AddItemFormType> = ({
             {userErrorMessage}
         </div>
     );
-};
+});
 
 export default AddItemForm;

@@ -1,14 +1,14 @@
-        import React, {ChangeEvent, FC, RefObject, useRef, useState} from 'react';
+import React, {ChangeEvent, FC, RefObject, useCallback, useRef, useState} from 'react';
 import TasksList from "./TasksList";
 import {FilterValueType} from "./App";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import ClearIcon, {HighlightOff} from '@material-ui/icons';
-        import {addTaskAC, changeTitleTaskAC, removeTaskAC, statusTaskAC} from "./state/tasks-reducer";
-        import {useDispatch, useSelector} from "react-redux";
-        import {AppRootState} from "./state/store";
-        import {TasksStateType} from "./AppWithRedux";
+import {addTaskAC, changeTitleTaskAC, removeTaskAC, statusTaskAC} from "./state/tasks-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootState} from "./state/store";
+import {TasksStateType} from "./AppWithRedux";
 
 type TodoListPropsType = {
     todoListId: string
@@ -32,17 +32,19 @@ export type TaskType = {
     isDone: boolean
 }
 
-const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
+const TodoList: FC<TodoListPropsType> = React.memo( (props): JSX.Element => {
+    console.log('TodoList is called')
     const dispatch = useDispatch()
     // const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todoListId ])
     const removeTask = (taskId: string, todolistId: string) => {
         const action = removeTaskAC(taskId, todolistId)
         dispatch(action)
     }
-    // const addTask = (title: string, todolistId: string) => {
-    //     const action = addTaskAC(title, todolistId)
-    //     dispatch(action)
-    // }
+    const addTask = useCallback( (title: string) => {
+        dispatch(addTaskAC(title, props.todoListId))
+    }, [dispatch, props.todoListId])
+
+
     const changeTaskStatus = (taskId: string, newIsDone: boolean, todolistId: string) => {
         const action = statusTaskAC(taskId, newIsDone, todolistId)
         dispatch(action)
@@ -53,35 +55,42 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
     }
 
 
-
     const addTaskInput: RefObject<HTMLInputElement> = useRef(null)
     console.log(addTaskInput)
 
     // const addTask = (title: string) =>{
     //     const action = addTaskAC(title, todolistId)
     //     dispatch(action)
-    // }
+    // }, [)
 
-    const setAllFilterValue = () => props.changeTodoListFilter('All', props.todoListId)
-    const setActiveFilterValue = () => props.changeTodoListFilter('Active', props.todoListId)
-    const setCompletedFilterValue = () => props.changeTodoListFilter('Completed', props.todoListId)
+    const setAllFilterValue = useCallback( () => props.changeTodoListFilter('All', props.todoListId), [props.changeTodoListFilter, props.todoListId])
+    const setActiveFilterValue = useCallback( () => props.changeTodoListFilter('Active', props.todoListId), [props.changeTodoListFilter, props.todoListId])
+    const setCompletedFilterValue = useCallback( () => props.changeTodoListFilter('Completed', props.todoListId), [props.changeTodoListFilter, props.todoListId])
     // const changeTodoListTitle = (title:string) => props.changeTodoListTitle({todlistId: props.todoListId})
-    const changeTodoListTitle = (title:string) => props.changeTodoListTitle(props.todoListId, title)
+    const changeTodoListTitle = useCallback( (title: string) => props.changeTodoListTitle(props.todoListId, title), [props.changeTodoListTitle, props.todoListId])
+
+    let tasksForTodolist = props.tasks
+
+    if (props.filter === 'Active') {
+        tasksForTodolist = props.tasks.filter(t => t.isDone === false)
+    }
+    if (props.filter === 'Completed') {
+        tasksForTodolist = props.tasks.filter(t => t.isDone === true)
+    }
+
 
     return (
         <div className={"todolist"}>
             <h3><EditableSpan title={props.title} changeTitle={changeTodoListTitle}/>
                 {/*<button onClick={()=>props.removeTodoList(props.todoListId)}>x</button>*/}
                 <IconButton
-                    onClick={()=>props.removeTodoList(props.todoListId)}
+                    onClick={() => props.removeTodoList(props.todoListId)}
                     size='small'
                 >
                     <HighlightOff/>
                 </IconButton>
             </h3>
-            <AddItemForm maxLengthUserName={15} addItem={(title) => {
-                dispatch(addTaskAC(title, props.todoListId))
-            }}/>
+            <AddItemForm maxLengthUserName={15} addItem={addTask}/>
             <TasksList
                 todoListId={props.todoListId}
                 tasks={props.tasks}
@@ -117,6 +126,6 @@ const TodoList: FC<TodoListPropsType> = (props): JSX.Element => {
             </div>
         </div>
     );
-};
+});
 
 export default TodoList;

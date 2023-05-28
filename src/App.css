@@ -1,6 +1,9 @@
+
 .App {
   padding: 30px;
   display: flex;
+  height: 100vh;
+  background-color: #172136 ;
 }
 
 .App > div {
@@ -9,10 +12,10 @@
 
 .todolist {
   height: max-content;
-  border: 3px solid darkgreen;
+  border: 3px solid #19193c;
   border-radius: 5px;
   padding: 20px;
-  background-color: lightcyan;
+  background-color: #9595c3 ;
 }
 
 .task {
@@ -28,7 +31,7 @@
   background-color: darkgreen;
   font-weight: bold;
   color: white;
-  border-color: darkgreen;
+  border-color: #19193c;
 }
 
 .filter-btn {

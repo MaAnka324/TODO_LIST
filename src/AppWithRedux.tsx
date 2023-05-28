@@ -25,10 +25,10 @@ export type TasksStateType = {
     [todolistId: string]: Array<TaskType>
 }
 
-const Fake = React.memo((props:any) => {
-    console.log('Fake is called')
-    return <h1>{props.count}</h1>
-})
+// const Fake = React.memo((props:any) => {
+//     console.log('Fake is called')
+//     return <h1>{props.count}</h1>
+// })
 
 function AppWithRedux() : JSX.Element{
     console.log('App is called')
@@ -103,7 +103,6 @@ function AppWithRedux() : JSX.Element{
         <div className="App">
             <AddItemForm maxLengthUserName={15} addItem={addTodolist}/>
             {todoListsComponents}
-            <Fake count={10}/>
         </div>
     )
 }

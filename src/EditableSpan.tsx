@@ -42,5 +42,5 @@ const EditableSpan: FC<EditableSpanType> = React.memo( (
             onDoubleClick={onEditMode}>{title}</span>
     );
 });
-//
+
 export default EditableSpan;

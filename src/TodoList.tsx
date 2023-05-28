@@ -93,7 +93,7 @@ const TodoList: FC<TodoListPropsType> = React.memo( (props): JSX.Element => {
             <AddItemForm maxLengthUserName={15} addItem={addTask}/>
             <TasksList
                 todoListId={props.todoListId}
-                tasks={props.tasks}
+                tasks={tasksForTodolist}
                 removeTask={removeTask}
                 changeTaskStatus={changeTaskStatus}
                 changeTaskTitle={changeTaskTitle}

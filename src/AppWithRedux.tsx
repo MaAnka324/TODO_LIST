@@ -36,6 +36,7 @@ function AppWithRedux() : JSX.Element{
     const todoLists = useSelector<AppRootState, Array<TodoListType>>(state => state.todolists)
     const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks)
 
+    console.log('todoLists', todoLists)
 
     const changeTodoListFilter = useCallback( (filter: FilterValueType, todolistId: string) => {
         const action = changeTodolistFilterAC(todolistId, filter)

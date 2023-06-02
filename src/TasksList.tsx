@@ -73,7 +73,7 @@ type TaskPropsType = {
 }
 
 
-const Task = React.memo( (props: TaskPropsType) => {
+export const Task = React.memo( (props: TaskPropsType) => {
 
     const removeTask = () => props.removeTask(props.task.id, props.todoListId)
     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(props.task.id, e.currentTarget.checked, props.todoListId)

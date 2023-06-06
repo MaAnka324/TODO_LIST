@@ -2,7 +2,7 @@ import React, {ChangeEvent, FC, useState} from 'react';
 import {AddCircle, AddCircleOutline, HighlightOff} from "@material-ui/icons";
 import {IconButton} from "@material-ui/core";
 
-type AddItemFormType = {
+export type AddItemFormType = {
     maxLengthUserName: number
     addItem: (title: string) => void
 }

@@ -34,7 +34,9 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "jest:integration": "jest -c integration/jest.config.js",
+    "test:integration": "start-server-and-test storybook http-get://localhost:6006 jest:integration"
   },
   "eslintConfig": {
     "extends": [
@@ -59,6 +61,7 @@
     "@storybook/addon-essentials": "7.0.18",
     "@storybook/addon-interactions": "7.0.18",
     "@storybook/addon-links": "7.0.18",
+    "@storybook/addon-storysource": "^7.0.18",
     "@storybook/blocks": "7.0.18",
     "@storybook/preset-create-react-app": "7.0.18",
     "@storybook/react": "^7.0.18",

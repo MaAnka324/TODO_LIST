@@ -34,7 +34,7 @@ const AddItemForm: FC<AddItemFormType> =  React.memo( ({
 
     const isUserMessageToLong: boolean = title.length > maxLengthUserName
 
-    const userErrorMessage = error && <div style={{color: 'hotpink'}}>Title is required</div>
+    const userErrorMessage = error && <div style={{color: 'hotpink'}}>Title is required!!!!</div>
 
     const userMaxLength = title.length > 15 && <div style={{color: 'hotpink'}}>Task title is to long</div>
 
@@ -53,11 +53,8 @@ const AddItemForm: FC<AddItemFormType> =  React.memo( ({
             {/*<button disabled={isAddBtnDisable} onClick={addTask}*/}
             {/*>+</button>*/}
 
-            <IconButton
-                onClick={addTask}
-                size='small'
-            >
-                <AddCircleOutline/>
+            <IconButton onClick={addTask} size='small'>
+                <AddCircleOutline/>!!!
             </IconButton>
 
             {userMaxLength}

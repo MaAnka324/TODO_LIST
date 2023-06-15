@@ -41,7 +41,6 @@ const AddItemForm: FC<AddItemFormType> =  React.memo( ({
     const isAddBtnDisable = !title.length || isUserMessageToLong || error
 
 
-
     return (
         <div>
             <input
@@ -54,7 +53,7 @@ const AddItemForm: FC<AddItemFormType> =  React.memo( ({
             {/*>+</button>*/}
 
             <IconButton onClick={addTask} size='small'>
-                <AddCircleOutline/>!!!
+                <AddCircleOutline/>
             </IconButton>
 
             {userMaxLength}

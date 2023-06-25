@@ -7,7 +7,7 @@ const settings = {
     },
 }
 
-const instance = axios.create( {
+const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     ...settings
 })
@@ -61,7 +61,7 @@ export const todolistAPI = {
         return instance.get<TodolistType[]>(`todo-lists`,)
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{item: TodolistType}>>(
+        return instance.post<ResponseType<{ item: TodolistType }>>(
             `todo-lists`,
             {title: title}
         )
@@ -73,11 +73,9 @@ export const todolistAPI = {
     updateTodolist(todolistId: string, title: string) {
         return instance.put<ResponseType>(
             `todo-lists/${todolistId}`,
-            { title: title }
+            {title: title}
         )
     },
-
-
 
 
     getTasks(todolistId: string) {
@@ -94,11 +92,13 @@ export const todolistAPI = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
 
     },
-    updateTask(todolistId: string, taskId: string, title: string) {
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskModel) {
         return instance.put<ResponseType>(
             `todo-lists/${todolistId}/tasks/${taskId}`,
-            {title: title}
+            model
         )
     },
-
 }
+
+
+

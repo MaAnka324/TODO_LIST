@@ -1,8 +1,12 @@
 import React, {ChangeEvent, FC, useCallback} from 'react';
 import {TaskType} from "./TodoList";
 import EditableSpan from "./EditableSpan";
-import ClearIcon, {HighlightOff} from '@material-ui/icons';
-import {IconButton, List, ListItem} from "@material-ui/core";
+import {IconButton, List, ListItem} from "@mui/material";
+import {HighlightOff} from "@mui/icons-material";
+import ClearIcon from '@mui/icons-material/Clear';
+import RemoveIcon from '@mui/icons-material/Remove';
+import Checkbox from '@mui/material/Checkbox';
+
 
 type TasksListPropsType = {
     todoListId: string
@@ -82,13 +86,20 @@ export const Task = React.memo( (props: TaskPropsType) => {
         props.changeTaskTitle(props.task.id, title, props.todoListId)
     }, [props.task.id, props.changeTaskTitle, props.todoListId])
 
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
     return (
         <ListItem key={props.task.id}>
-            <input
-                type="checkbox"
-                checked={props.task.isDone}
-                onChange={changeStatusHandler}
+
+            <Checkbox {...label} defaultChecked
+                      checked={props.task.isDone}
+                      onChange={changeStatusHandler}
             />
+            {/*<input*/}
+            {/*    type="checkbox"*/}
+            {/*    checked={props.task.isDone}*/}
+            {/*    onChange={changeStatusHandler}*/}
+            {/*/>*/}
 
             <EditableSpan
                 title={props.task.title}
@@ -99,7 +110,7 @@ export const Task = React.memo( (props: TaskPropsType) => {
                 onClick={removeTask}
                 size='small'
             >
-                <HighlightOff/>
+                <ClearIcon/>
             </IconButton>
 
         </ListItem>

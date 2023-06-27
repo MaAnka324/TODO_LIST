@@ -1,6 +1,8 @@
 import React, {ChangeEvent, FC, useState} from 'react';
-import {AddCircle, AddCircleOutline, HighlightOff} from "@material-ui/icons";
-import {IconButton} from "@material-ui/core";
+import {IconButton, TextField} from "@mui/material";
+import {AddCircleOutline} from "@mui/icons-material";
+import AddIcon from '@mui/icons-material/Add';
+
 
 export type AddItemFormType = {
     maxLengthUserName: number
@@ -43,17 +45,27 @@ const AddItemForm: FC<AddItemFormType> =  React.memo( ({
 
     return (
         <div>
-            <input
+            <TextField
+                id="outlined-basic"
+                label='Please, enter title'
+                variant="outlined"
                 value={title}
-                placeholder='Please, enter title'
                 onChange={changeLocalTitle}
                 onKeyDown={(e)=> e.key  === 'Enter' && addTask()}
             />
+
+            {/*<input*/}
+            {/*    value={title}*/}
+            {/*    placeholder='Please, enter title'*/}
+            {/*    onChange={changeLocalTitle}*/}
+            {/*    onKeyDown={(e)=> e.key  === 'Enter' && addTask()}*/}
+            {/*/>*/}
+
             {/*<button disabled={isAddBtnDisable} onClick={addTask}*/}
             {/*>+</button>*/}
 
             <IconButton onClick={addTask} size='small'>
-                <AddCircleOutline/>
+                <AddIcon fontSize={"large"}/>
             </IconButton>
 
             {userMaxLength}

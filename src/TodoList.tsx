@@ -3,12 +3,15 @@ import TasksList from "./TasksList";
 import {FilterValueType} from "./App";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
-import {Button, IconButton} from "@material-ui/core";
-import ClearIcon, {HighlightOff} from '@material-ui/icons';
+// import {Button, IconButton} from "@material-ui/core";
+import DeleteIcon from '@mui/icons-material/Delete';
+// import  {Fingerprint, HighlightOff} from '@material-ui/icons';
 import {addTaskAC, changeTitleTaskAC, removeTaskAC, statusTaskAC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./state/store";
 import {TasksStateType} from "./AppWithRedux";
+import {Button, IconButton} from "@mui/material";
+import {HighlightOff} from "@mui/icons-material";
 
 type TodoListPropsType = {
     todoListId: string
@@ -31,6 +34,7 @@ export type TaskType = {
     title: string
     isDone: boolean
 }
+
 
 const TodoList: FC<TodoListPropsType> = React.memo( (props): JSX.Element => {
     console.log('TodoList is called')
@@ -82,13 +86,15 @@ const TodoList: FC<TodoListPropsType> = React.memo( (props): JSX.Element => {
     return (
         <div className={"todolist"}>
             <h3><EditableSpan title={props.title} changeTitle={changeTodoListTitle}/>
-                {/*<button onClick={()=>props.removeTodoList(props.todoListId)}>x</button>*/}
+
                 <IconButton
                     onClick={() => props.removeTodoList(props.todoListId)}
                     size='small'
                 >
-                    <HighlightOff/>
+                    <DeleteIcon/>
+
                 </IconButton>
+
             </h3>
             <AddItemForm maxLengthUserName={15} addItem={addTask}/>
             <TasksList
@@ -98,29 +104,29 @@ const TodoList: FC<TodoListPropsType> = React.memo( (props): JSX.Element => {
                 changeTaskStatus={changeTaskStatus}
                 changeTaskTitle={changeTaskTitle}
             />
-            <div>
+            <div className='filter-buttons'>
                 <Button
                     size='small'
                     variant='contained'
                     disableElevation
-                    color={props.filter === 'All' ? 'secondary' : 'primary'}
-                    className={props.filter === 'All' ? 'active-filter' : 'filter-btn'}
+                    color={props.filter === 'All' ? 'primary' : 'success'}
+                    // className={props.filter === 'All' ? 'active-filter' : 'filter-btn'}
                     onClick={setAllFilterValue}
                 >All</Button>
                 <Button
                     size='small'
                     variant='contained'
                     disableElevation
-                    color={props.filter === 'Active' ? 'secondary' : 'primary'}
-                    className={props.filter === 'Active' ? 'active-filter' : 'filter-btn'}
+                    color={props.filter === 'Active' ? 'primary' : 'success'}
+                    // className={props.filter === 'Active' ? 'active-filter' : 'filter-btn'}
                     onClick={setActiveFilterValue}
                 >Active</Button>
                 <Button
                     size='small'
                     variant='contained'
                     disableElevation
-                    color={props.filter === 'Completed' ? 'secondary' : 'primary'}
-                    className={props.filter === 'Completed' ? 'active-filter' : 'filter-btn'}
+                    color={props.filter === 'Completed' ? 'primary' : 'success'}
+                    // className={props.filter === 'Completed' ? 'active-filter' : 'filter-btn'}
                     onClick={setCompletedFilterValue}
                 >Completed</Button>
             </div>

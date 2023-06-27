@@ -1,4 +1,6 @@
 import React, {ChangeEvent, FC, useState} from 'react';
+import {TextField} from "@mui/material";
+// import {TextField} from "@material-ui/core";
 
 
 type EditableSpanType = {
@@ -7,12 +9,12 @@ type EditableSpanType = {
     spanClasses?: string
     inputClasses?: string
 }
-const EditableSpan: FC<EditableSpanType> = React.memo( (
+const EditableSpan: FC<EditableSpanType> = React.memo((
     {
         title,
         changeTitle,
         spanClasses
-}) => {
+    }) => {
     console.log('EditableSpan')
     const [editMode, setEditMode] = useState<boolean>(false)
     const [localTitle, setLocalTitle] = useState<string>(title)
@@ -32,14 +34,15 @@ const EditableSpan: FC<EditableSpanType> = React.memo( (
 
     return (
         editMode
-        ? <input
-            value={localTitle}
-            onChange={changeLocalTitle}
-            autoFocus={true}
-            onBlur={offEditMode}
+            ? <TextField id="standard-basic"
+                         variant="standard"
+                         value={localTitle}
+                         onChange={changeLocalTitle}
+                         autoFocus={true}
+                         onBlur={offEditMode}
             />
-        : <span className={spanClasses}
-            onDoubleClick={onEditMode}>{title}</span>
+            : <span className={spanClasses}
+                    onDoubleClick={onEditMode}>{title}</span>
     );
 });
 

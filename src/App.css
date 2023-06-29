@@ -1,15 +1,18 @@
 
 .App {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: start;
+  /*flex-direction: row;*/
+  /*justify-content: space-around;*/
+  /*flex-wrap: wrap;*/
   padding: 30px;
   min-height: 100vh;
   background-color: #07575B ;
 }
 
 .App > div {
-  margin-right: 50px;
+
 }
 
 .todolist {
@@ -18,6 +21,7 @@
   border-radius: 5px;
   padding: 20px;
   background-color: #66A5AD ;
+  margin: 30px 10px;
 }
 
 .task {
@@ -29,23 +33,44 @@
   opacity: 0.5;
 }
 
-.active-filter {
-  background-color: darkgreen;
-  font-weight: bold;
-  color: white;
-  border-color: #19193c;
-}
+/*.active-filter {*/
+/*  background-color: darkgreen;*/
+/*  font-weight: bold;*/
+/*  color: white;*/
+/*  border-color: #19193c;*/
+/*}*/
 
-.filter-btn {
-  background-color: darkseagreen;
-  border-color: darkseagreen;
-  color: white;
-}
+/*.filter-btn {*/
+/*  background-color: darkseagreen;*/
+/*  border-color: darkseagreen;*/
+/*  color: white;*/
+/*}*/
 
 .filter-buttons {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
+
+.addItemForm {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  height: 70px;
+  margin-left: 80px;
+
+}
+
+.todolists {
+  padding-left: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  flex-wrap: wrap;
+}
+
+
+
 
 

@@ -1,5 +1,7 @@
-import {FilterValueType, TodoListType} from "../App";
+
 import {v1} from "uuid";
+import {todolistAPI, TodolistType} from "../api/todolist-api";
+import {Dispatch} from "redux";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -24,20 +26,25 @@ export type ChangeTodolistFilterActionType = {
     filter: FilterValueType
 }
 
-export type SetTodolistActionType = {
-    type: 'SET-TODOLIST'
-    todolists: Array<TodoListType>
-}
+// export type SetTodolistActionType = {
+//     type: 'SET-TODOLIST'
+//     todolists: Array<TodolistDomainType>
+// }
 
 type ActionType = RemoveTodolistActionType
     | AddTodolistActionType
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType
-    | SetTodolistActionType
+    | SetTodolistsType
 
-const initialState = [] as Array<TodoListType>
+const initialState = [] as Array<TodolistDomainType>
 type InitialStateType = typeof initialState
 
+export type FilterValueType = 'All' | 'Active' | 'Completed'
+
+export type TodolistDomainType = TodolistType & {
+    filter: FilterValueType
+}
 
 
 export const todolistsReducer = (state = initialState, action: ActionType): InitialStateType => {
@@ -46,7 +53,13 @@ export const todolistsReducer = (state = initialState, action: ActionType): Init
             return state.filter(tl => tl.id != action.id)
         }
         case 'ADD-TODOLIST': {
-            return [ {id: action.todolistId, title: action.title, filter: 'All'}, ...state]
+            return [ {
+                id: action.todolistId,
+                title: action.title,
+                filter: 'All',
+                addedDate: '',
+                order: 0
+            }, ...state]
         }
         case 'CHANGE-TODOLIST-TITLE': {
             const stateCopy = [...state]
@@ -118,9 +131,24 @@ export const changeTodolistFilterAC = (id: string, filter: FilterValueType): Cha
     }
 }
 
-export const setTodolistsAC = (todolists: Array<TodoListType>): SetTodolistActionType => {
+
+export type SetTodolistsType = ReturnType<typeof setTodolistsAC>
+
+export const setTodolistsAC = (todolists: Array<TodolistDomainType>) => {
     return {
         type: 'SET-TODOLIST',
         todolists
+    } as const
+}
+
+
+
+export const fetchTodolistsThunk = () => {
+
+    return (dispatch: Dispatch) => {
+        todolistAPI.getTodolist()
+            .then((res) => {
+                // dispatch(setTodolistsAC(res.data))
+            })
     }
 }

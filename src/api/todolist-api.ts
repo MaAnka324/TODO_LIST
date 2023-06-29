@@ -3,7 +3,8 @@ import axios from 'axios'
 const settings = {
     withCredentials: true,
     headers: {
-        'API-KEY': '7d3c398b-2b30-4da2-a118-f5a83f07d318',
+        // 'API-KEY': '7d3c398b-2b30-4da2-a118-f5a83f07d318',
+        'API-KEY': 'b2aa0181-7c4a-4cfb-9fa0-ad8f16fa6d5f',
     },
 }
 
@@ -26,12 +27,27 @@ export type ResponseType<D = {}> = {
     data: D
 }
 
+export enum TaskStatuses {
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+
+export enum TaskPriorities {
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
+}
+
 export type TasksType = {
     description: string
     title: string
-    completed: boolean
-    status: number
-    priority: number
+    // completed: boolean
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
     id: string

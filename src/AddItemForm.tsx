@@ -7,11 +7,13 @@ import AddIcon from '@mui/icons-material/Add';
 export type AddItemFormType = {
     maxLengthUserName: number
     addItem: (title: string) => void
+    className?: string
 }
 
 const AddItemForm: FC<AddItemFormType> =  React.memo( ({
     maxLengthUserName,
-    addItem
+    addItem,
+    className
                                           }) => {
     console.log('AddItemForm is called')
 
@@ -44,7 +46,7 @@ const AddItemForm: FC<AddItemFormType> =  React.memo( ({
 
 
     return (
-        <div>
+        <div className={className}>
             <TextField
                 id="outlined-basic"
                 label='Please, enter title'

@@ -3,21 +3,17 @@ import './App.css';
 import TodoList from "./TodoList";
 import AddItemForm from "./AddItemForm";
 import {
-    addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, FilterValueType, getTodosTC,
-    removeTodolistAC, TodolistDomainType,
+    createTodolistTC,
+    deleteTodolistTC,
+    FilterValueType,
+    getTodolistsTC,
+    TodolistDomainType,
+    updateTodolistTitleTC,
 } from "./state/todolists-reducer";
-import {
-
-    changeTitleTaskAC, createTasksTC,
-    deleteTasksTC,
-    removeTaskAC,
-    statusTaskAC,
-    tasksReducer, updateTasksTC
-} from "./state/tasks-reducer";
-import {AppDispatchType, AppRootState, useAppDispatch, useAppSelector} from "./state/store";
-import {TaskStatuses, TasksType, todolistAPI} from "./api/todolist-api";
+import {createTasksTC, deleteTasksTC, updateTasksTC} from "./state/tasks-reducer";
+import {useAppDispatch, useAppSelector} from "./state/store";
+import {TaskStatuses, TasksType} from "./api/todolist-api";
 
 
 export type TasksStateType = {
@@ -32,7 +28,7 @@ function AppWithRedux() : JSX.Element{
     const tasks = useAppSelector<TasksStateType>(state => state.tasks)
 
     useEffect( () => {
-        dispatch(getTodosTC())
+        dispatch(getTodolistsTC())
     }, [] )
 
 
@@ -42,18 +38,15 @@ function AppWithRedux() : JSX.Element{
     }, [dispatch])
 
     const removeTodoList = useCallback( (todolistId: string) => {
-        const action = removeTodolistAC(todolistId)
-        dispatch(action)
+        dispatch(deleteTodolistTC(todolistId))
     }, [dispatch])
 
     const changeTodoListTitle = useCallback( (todoListId: string, title: string) => {
-        const action = changeTodolistTitleAC(todoListId, title)
-        dispatch(action)
+        dispatch(updateTodolistTitleTC(todoListId, title))
     }, [dispatch])
 
     const addTodolist = useCallback( (title: string) => {
-        const action = addTodolistAC(title)
-        dispatch(action)
+        dispatch(createTodolistTC(title))
     }, [dispatch])
 
 

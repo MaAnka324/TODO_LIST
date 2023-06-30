@@ -57,7 +57,6 @@ export type TasksType = {
 export type UpdateTaskModel = {
     title: string
     description: string
-    // completed: required(boolean)
     status: number
     priority: number
     startDate: string

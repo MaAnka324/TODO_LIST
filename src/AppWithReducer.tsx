@@ -61,10 +61,10 @@ function AppWithReducer(): JSX.Element {
     })
 
 
-    const removeTask = (taskId: string, todolistId: string) => {
-        const action = removeTaskAC(taskId, todolistId)
-        dispatchToTasksReducer(action)
-    }
+    // const removeTask = (taskId: string, todolistId: string) => {
+    //     const action = removeTaskAC(taskId, todolistId)
+    //     dispatchToTasksReducer(action)
+    // }
     // const addTask = (title: string, todolistId: string) => {
     //     const action = addTaskAC(todolistId, title)
     //     dispatchToTasksReducer(action)
@@ -73,30 +73,30 @@ function AppWithReducer(): JSX.Element {
     //     const action = statusTaskAC(taskId, status, todolistId)
     //     dispatchToTasksReducer(action)
     // }
-    const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
-        const action = changeTitleTaskAC(taskId, newTitle, todoListId)
-        dispatchToTasksReducer(action)
-    }
+    // const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
+    //     const action = changeTitleTaskAC(taskId, newTitle, todoListId)
+    //     dispatchToTasksReducer(action)
+    // }
 
 
-    const changeTodoListFilter = (filter: FilterValueType, todolistId: string) => {
-        const action = changeTodolistFilterAC(todolistId, filter)
-        dispatchTodoListsReducer(action)
-    }
-    const removeTodoList = (todolistId: string) => {
-        const action = removeTodolistAC(todolistId)
-        dispatchTodoListsReducer(action)
-        dispatchToTasksReducer(action)
-    }
-    const changeTodoListTitle = (todoListId: string, title: string) => {
-        const action = changeTodolistTitleAC(todoListId, title)
-        dispatchTodoListsReducer(action)
-    }
-    const addTodolist = (title: string) => {
-        const action = addTodolistAC(title)
-        dispatchTodoListsReducer(action)
-        dispatchToTasksReducer(action)
-    }
+    // const changeTodoListFilter = (filter: FilterValueType, todolistId: string) => {
+    //     const action = changeTodolistFilterAC(todolistId, filter)
+    //     dispatchTodoListsReducer(action)
+    // }
+    // const removeTodoList = (todolistId: string) => {
+    //     const action = removeTodolistAC(todolistId)
+    //     dispatchTodoListsReducer(action)
+    //     dispatchToTasksReducer(action)
+    // }
+    // const changeTodoListTitle = (todoListId: string, title: string) => {
+    //     const action = changeTodolistTitleAC(todoListId, title)
+    //     dispatchTodoListsReducer(action)
+    // }
+    // const addTodolist = (title: string) => {
+    //     const action = addTodolistAC(title)
+    //     dispatchTodoListsReducer(action)
+    //     dispatchToTasksReducer(action)
+    // }
 
 
     const getFilteredTasks = (tasks: Array<TasksType>, filter: FilterValueType) => {
@@ -135,8 +135,8 @@ function AppWithReducer(): JSX.Element {
 
     return (
         <div className="App">
-            <AddItemForm maxLengthUserName={15} addItem={addTodolist}/>
-            {todoListsComponents}
+            {/*<AddItemForm maxLengthUserName={15} addItem={addTodolist}/>*/}
+            {/*{todoListsComponents}*/}
         </div>
     )
 }

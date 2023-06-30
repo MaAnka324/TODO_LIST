@@ -3,8 +3,7 @@ import TasksList from "./TasksList";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import DeleteIcon from '@mui/icons-material/Delete';
-import {addTaskAC, changeTitleTaskAC, getTasksTC, removeTaskAC, statusTaskAC} from "./state/tasks-reducer";
-import {useDispatch} from "react-redux";
+import {getTasksTC} from "./state/tasks-reducer";
 import {Button, IconButton} from "@mui/material";
 import {FilterValueType} from "./state/todolists-reducer";
 import {TaskStatuses, TasksType} from "./api/todolist-api";
@@ -16,8 +15,8 @@ type TodoListPropsType = {
     title: string
     tasks: TasksType[]
 
-    removeTask : (taskId: string, todoListId: string) => void
-    addTask: (title:string, todoListId: string) => void
+    removeTask: (taskId: string, todoListId: string) => void
+    addTask: (title: string, todoListId: string) => void
     changeTaskStatus: (taskId: string, status: TaskStatuses, todoListId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
 

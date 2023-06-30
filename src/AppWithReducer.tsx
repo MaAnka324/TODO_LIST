@@ -65,14 +65,14 @@ function AppWithReducer(): JSX.Element {
         const action = removeTaskAC(taskId, todolistId)
         dispatchToTasksReducer(action)
     }
-    const addTask = (title: string, todolistId: string) => {
-        const action = addTaskAC(title, todolistId)
-        dispatchToTasksReducer(action)
-    }
-    const changeTaskStatus = (taskId: string, status: TaskStatuses, todolistId: string) => {
-        const action = statusTaskAC(taskId, status, todolistId)
-        dispatchToTasksReducer(action)
-    }
+    // const addTask = (title: string, todolistId: string) => {
+    //     const action = addTaskAC(todolistId, title)
+    //     dispatchToTasksReducer(action)
+    // }
+    // const changeTaskStatus = (taskId: string, status: TaskStatuses, todolistId: string) => {
+    //     const action = statusTaskAC(taskId, status, todolistId)
+    //     dispatchToTasksReducer(action)
+    // }
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
         const action = changeTitleTaskAC(taskId, newTitle, todoListId)
         dispatchToTasksReducer(action)

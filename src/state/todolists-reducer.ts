@@ -134,7 +134,7 @@ export const changeTodolistFilterAC = (id: string, filter: FilterValueType): Cha
 
 export type SetTodolistsType = ReturnType<typeof setTodolistsAC>
 
-export const setTodolistsAC = (todolists: Array<TodolistDomainType>) => {
+export const setTodolistsAC = (todolists: Array<TodolistType>) => {
     return {
         type: 'SET-TODOLIST',
         todolists
@@ -143,12 +143,11 @@ export const setTodolistsAC = (todolists: Array<TodolistDomainType>) => {
 
 
 
-export const fetchTodolistsThunk = () => {
-
+export const getTodosTC = () => {
     return (dispatch: Dispatch) => {
         todolistAPI.getTodolist()
             .then((res) => {
-                // dispatch(setTodolistsAC(res.data))
+                dispatch(setTodolistsAC(res.data))
             })
     }
 }

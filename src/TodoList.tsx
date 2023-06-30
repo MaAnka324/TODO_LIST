@@ -1,13 +1,14 @@
-import React, {FC, RefObject, useCallback, useRef} from 'react';
+import React, {FC, RefObject, useCallback, useEffect, useRef} from 'react';
 import TasksList from "./TasksList";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import DeleteIcon from '@mui/icons-material/Delete';
-import {addTaskAC, changeTitleTaskAC, removeTaskAC, statusTaskAC} from "./state/tasks-reducer";
+import {addTaskAC, changeTitleTaskAC, getTasksTC, removeTaskAC, statusTaskAC} from "./state/tasks-reducer";
 import {useDispatch} from "react-redux";
 import {Button, IconButton} from "@mui/material";
 import {FilterValueType} from "./state/todolists-reducer";
 import {TaskStatuses, TasksType} from "./api/todolist-api";
+import {useAppDispatch} from "./state/store";
 
 type TodoListPropsType = {
     todoListId: string
@@ -15,10 +16,10 @@ type TodoListPropsType = {
     title: string
     tasks: TasksType[]
 
-    // removeTask : (taskId: string, todoListId: string) => void
-    // addTask: (title:string, todoListId: string) => void
+    removeTask : (taskId: string, todoListId: string) => void
+    addTask: (title:string, todoListId: string) => void
     changeTaskStatus: (taskId: string, status: TaskStatuses, todoListId: string) => void
-    // changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
+    changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
 
     changeTodoListFilter: (filter: FilterValueType, todoListId: string) => void
     removeTodoList: (todolistId: string) => void
@@ -34,34 +35,34 @@ type TodoListPropsType = {
 
 const TodoList: FC<TodoListPropsType> = React.memo((props): JSX.Element => {
     console.log('TodoList is called')
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(getTasksTC(props.todoListId))
+    }, [])
+
+    // const dispatch = useDispatch()
     // const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todoListId ])
-    const removeTask = (taskId: string, todolistId: string) => {
-        const action = removeTaskAC(taskId, todolistId)
-        dispatch(action)
-    }
+
     const addTask = useCallback((title: string) => {
-        dispatch(addTaskAC(title, props.todoListId))
-    }, [dispatch, props.todoListId])
+        props.addTask(title, props.todoListId)
+    }, [props.addTask, props.todoListId])
+
+    const removeTask = (taskId: string, todolistId: string) => {
+        props.removeTask(taskId, todolistId)
+    }
 
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
-        const action = changeTitleTaskAC(taskId, newTitle, todoListId)
-        dispatch(action)
+        props.changeTaskTitle(taskId, newTitle, todoListId)
     }
 
     const changeTaskStatus = (taskId: string, status: TaskStatuses, todolistId: string) => {
         props.changeTaskStatus(taskId, status, todolistId)
-
     }
 
 
     const addTaskInput: RefObject<HTMLInputElement> = useRef(null)
     console.log(addTaskInput)
-
-    // const addTask = (title: string) =>{
-    //     const action = addTaskAC(title, todolistId)
-    //     dispatch(action)
-    // }, [)
 
     const setAllFilterValue = useCallback(() => props.changeTodoListFilter('All', props.todoListId), [props.changeTodoListFilter, props.todoListId])
     const setActiveFilterValue = useCallback(() => props.changeTodoListFilter('Active', props.todoListId), [props.changeTodoListFilter, props.todoListId])

@@ -1,18 +1,22 @@
-import React, {useCallback, useEffect, useReducer, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import TodoList from "./TodoList";
-import {v1} from "uuid";
 import AddItemForm from "./AddItemForm";
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, fetchTodolistsThunk, FilterValueType,
-    removeTodolistAC, setTodolistsAC, TodolistDomainType,
-    todolistsReducer
+    changeTodolistTitleAC, FilterValueType, getTodosTC,
+    removeTodolistAC, TodolistDomainType,
 } from "./state/todolists-reducer";
-import {addTaskAC, changeTitleTaskAC, removeTaskAC, statusTaskAC, tasksReducer} from "./state/tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatchType, AppRootState, useAppDispatch} from "./state/store";
+import {
+
+    changeTitleTaskAC, createTasksTC,
+    deleteTasksTC,
+    removeTaskAC,
+    statusTaskAC,
+    tasksReducer, updateTasksTC
+} from "./state/tasks-reducer";
+import {AppDispatchType, AppRootState, useAppDispatch, useAppSelector} from "./state/store";
 import {TaskStatuses, TasksType, todolistAPI} from "./api/todolist-api";
 
 
@@ -24,13 +28,12 @@ export type TasksStateType = {
 function AppWithRedux() : JSX.Element{
     console.log('App is called')
     const dispatch = useAppDispatch()
-    const todoLists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todolists)
-    const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks)
+    const todoLists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
+    const tasks = useAppSelector<TasksStateType>(state => state.tasks)
 
     useEffect( () => {
-        dispatch(fetchTodolistsThunk())
+        dispatch(getTodosTC())
     }, [] )
-
 
 
     const changeTodoListFilter = useCallback( (filter: FilterValueType, todolistId: string) => {
@@ -55,9 +58,17 @@ function AppWithRedux() : JSX.Element{
 
 
 
+    const addTask = useCallback((title: string, todoListId: string) => {
+        dispatch(createTasksTC(todoListId, title))
+    }, [])
+    const removeTask = (taskId: string, todolistId: string) => {
+        dispatch(deleteTasksTC(todolistId, taskId))
+    }
     const changeTaskStatus = (taskId: string, status: TaskStatuses, todolistId: string) => {
-        const action = statusTaskAC(taskId, status, todolistId)
-        dispatch(action)
+        dispatch(updateTasksTC(todolistId, taskId, {status}))
+    }
+    const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
+        dispatch(updateTasksTC(todoListId, taskId, {title: newTitle}))
     }
 
 
@@ -78,7 +89,10 @@ function AppWithRedux() : JSX.Element{
                 removeTodoList={removeTodoList}
                 changeTodoListFilter={changeTodoListFilter}
                 changeTodoListTitle={changeTodoListTitle}
+                addTask={addTask}
                 changeTaskStatus={changeTaskStatus}
+                removeTask={removeTask}
+                changeTaskTitle={changeTaskTitle}
             />
         )
     })

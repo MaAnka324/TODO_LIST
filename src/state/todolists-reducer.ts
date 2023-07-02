@@ -49,7 +49,7 @@ export type TodolistDomainType = TodolistType & {
 }
 
 
-export const todolistsReducer = (state = initialState, action: AppActionsType): InitialStateType => {
+export const todolistsReducer = (state = initialState, action: TodolistsActionType): InitialStateType => {
     switch (action.type) {
         case 'REMOVE-TODOLIST': {
             return state.filter(tl => tl.id != action.id)
@@ -139,12 +139,24 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
     } as const
 }
 
-export const getTodolistsTC = (): AppThunk => {
+
+export const _getTodolistsTC = (): AppThunk => {
     return (dispatch) => {
         todolistAPI.getTodolist()
             .then((res) => {
                 dispatch(setTodolistsAC(res.data))
             })
+    }
+}
+
+
+export const getTodolistsTC = (): AppThunk => async dispatch => {
+    try {
+        const res = await todolistAPI.getTodolist()
+        dispatch(setTodolistsAC(res.data))
+    }
+    catch (e) {
+        throw new Error()
     }
 }
 

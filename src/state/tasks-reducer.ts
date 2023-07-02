@@ -43,7 +43,7 @@ const initialState = {} as TasksStateType
 type InitialStateType = typeof initialState
 
 
-export const tasksReducer = (state = initialState, action: AppActionsType): InitialStateType => {
+export const tasksReducer = (state = initialState, action: TasksActionType): InitialStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             const stateCopy = {...state}

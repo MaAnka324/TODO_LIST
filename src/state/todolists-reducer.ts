@@ -12,8 +12,6 @@ export type RemoveTodolistActionType = {
 export type AddTodolistActionType = {
     type: 'ADD-TODOLIST'
     todolist: TodolistType
-    // title: string
-    // todolistId: string
 }
 
 export type ChangeTodolistTitleActionType = {
@@ -27,11 +25,6 @@ export type ChangeTodolistFilterActionType = {
     id: string
     filter: FilterValueType
 }
-
-// export type SetTodolistActionType = {
-//     type: 'SET-TODOLIST'
-//     todolists: Array<TodolistDomainType>
-// }
 
 export type TodolistsActionType = RemoveTodolistActionType
     | AddTodolistActionType
@@ -108,8 +101,6 @@ export const addTodolistAC = (todolist: TodolistType): AddTodolistActionType => 
     return {
         type: 'ADD-TODOLIST',
         todolist
-        // title,
-        // todolistId: v1()
     }
 }
 
@@ -129,7 +120,6 @@ export const changeTodolistFilterAC = (id: string, filter: FilterValueType): Cha
     }
 }
 
-
 export type SetTodolistsType = ReturnType<typeof setTodolistsAC>
 
 export const setTodolistsAC = (todolists: Array<TodolistType>) => {
@@ -140,6 +130,10 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
 }
 
 
+
+
+
+
 export const _getTodolistsTC = (): AppThunk => {
     return (dispatch) => {
         todolistAPI.getTodolist()
@@ -148,7 +142,6 @@ export const _getTodolistsTC = (): AppThunk => {
             })
     }
 }
-
 
 export const getTodolistsTC = (): AppThunk => async dispatch => {
     try {
@@ -177,7 +170,6 @@ export const createTodolistTC = (title: string): AppThunk => {
             })
     }
 }
-
 
 export const updateTodolistTitleTC = (todolistId: string, title: string): AppThunk => {
     return (dispatch, getState: () => AppRootState) => {

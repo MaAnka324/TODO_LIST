@@ -23,6 +23,7 @@ export type TasksStateType = {
 
 function AppWithRedux() : JSX.Element{
     console.log('App is called')
+
     const dispatch = useAppDispatch()
     const todoLists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useAppSelector<TasksStateType>(state => state.tasks)

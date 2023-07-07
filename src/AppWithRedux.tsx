@@ -2,6 +2,12 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import TodoList from "./TodoList";
 import AddItemForm from "./AddItemForm";
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { Menu } from '@mui/icons-material';
 import {
     changeTodolistFilterAC,
     createTodolistTC,
@@ -14,6 +20,8 @@ import {
 import {createTasksTC, deleteTasksTC, updateTasksTC} from "./state/tasks-reducer";
 import {useAppDispatch, useAppSelector} from "./state/store";
 import {TaskStatuses, TasksType} from "./api/todolist-api";
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 
 
 export type TasksStateType = {
@@ -93,6 +101,22 @@ function AppWithRedux() : JSX.Element{
 
     return (
         <div className="App">
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant="h6">
+                        News
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+
+            <Box sx={{ width: '100%' }}>
+                <LinearProgress />
+            </Box>
+
             <AddItemForm maxLengthUserName={15} addItem={addTodolist} className='addItemForm'/>
             <div className={'todolists'}>
                 {todoListsComponents}

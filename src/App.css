@@ -6,9 +6,10 @@
   /*flex-direction: row;*/
   /*justify-content: space-around;*/
   /*flex-wrap: wrap;*/
-  padding: 30px;
+
   min-height: 100vh;
-  background-color: #07575B ;
+  /*background-color: #07575B ;*/
+  background-color: #a7d5f0 ;
 }
 
 .App > div {
@@ -20,7 +21,7 @@
   border: 3px solid #003B46;
   border-radius: 5px;
   padding: 20px;
-  background-color: #66A5AD ;
+  background-color: #a7d5f0;
   margin: 30px 10px;
 }
 
@@ -69,6 +70,7 @@
   justify-content: start;
   flex-wrap: wrap;
 }
+
 
 
 

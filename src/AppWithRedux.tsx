@@ -22,6 +22,8 @@ import {useAppDispatch, useAppSelector} from "./state/store";
 import {TaskStatuses, TasksType} from "./api/todolist-api";
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
+import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
+import {RequestStatusType} from "./app/app-reducer";
 
 
 export type TasksStateType = {
@@ -99,8 +101,11 @@ function AppWithRedux() : JSX.Element{
         )
     })
 
+    // const status = useAppSelector<RequestStatusType>(state => state.app.status)
+
     return (
         <div className="App">
+            {/*<ErrorSnackbar/>*/}
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">

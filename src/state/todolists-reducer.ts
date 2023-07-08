@@ -1,8 +1,5 @@
-import {v1} from "uuid";
-import {TaskPriorities, TaskStatuses, todolistAPI, TodolistType} from "../api/todolist-api";
-import {Dispatch} from "redux";
-import {addTaskAC, removeTaskAC, statusTaskAC} from "./tasks-reducer";
-import {AppActionsType, AppRootState, AppThunk} from "./store";
+import {todolistAPI, TodolistType} from "../api/todolist-api";
+import {AppRootState, AppThunk} from "./store";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'

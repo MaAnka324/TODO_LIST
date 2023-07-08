@@ -38,11 +38,15 @@ const initialGlobalState = {
                 status: TaskStatuses.Completed, todoListId: "todolistId_1", startDate: '',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''},
         ]
+    },
+    app: {
+        status: 'idle',
+        error: null
     }
 };
 
-export const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as AppRootState);
-
-export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) => {
-    return <Provider store={storyBookStore}>{storyFn()}</Provider>
-}
+// export const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as AppRootState);
+//
+// export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) => {
+//     return <Provider store={storyBookStore}>{storyFn()}</Provider>
+// }

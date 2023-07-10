@@ -1,5 +1,6 @@
 import {todolistAPI, TodolistType} from "../api/todolist-api";
-import {AppRootState, AppThunk} from "./store";
+import {AppActionsType, AppRootState, AppThunk} from "./store";
+import { setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -28,6 +29,7 @@ export type TodolistsActionType = RemoveTodolistActionType
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType
     | SetTodolistsType
+    | SetLoadingStatusType
 
 const initialState = [] as Array<TodolistDomainType>
 type InitialStateType = typeof initialState
@@ -129,8 +131,6 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
 
 
 
-
-
 export const _getTodolistsTC = (): AppThunk => {
     return (dispatch) => {
         todolistAPI.getTodolist()
@@ -144,6 +144,7 @@ export const getTodolistsTC = (): AppThunk => async dispatch => {
     try {
         const res = await todolistAPI.getTodolist()
         dispatch(setTodolistsAC(res.data))
+        dispatch(setLoadingStatus('succeeded'))
     }
     catch (e) {
         throw new Error()
@@ -152,18 +153,22 @@ export const getTodolistsTC = (): AppThunk => async dispatch => {
 
 export const deleteTodolistTC = (todoId: string): AppThunk => {
     return (dispatch) => {
+        dispatch(setLoadingStatus('loading'))
         todolistAPI.deleteTodolist(todoId)
             .then((res) => {
                 dispatch(removeTodolistAC(todoId))
+                dispatch(setLoadingStatus('succeeded'))
             })
     }
 }
 
 export const createTodolistTC = (title: string): AppThunk => {
     return (dispatch) => {
+        dispatch(setLoadingStatus('loading'))
         todolistAPI.createTodolist(title)
             .then((res) => {
                 dispatch(addTodolistAC(res.data.data.item))
+                dispatch(setLoadingStatus('succeeded'))
             })
     }
 }
@@ -174,9 +179,11 @@ export const updateTodolistTitleTC = (todolistId: string, title: string): AppThu
         const todolist = getState().todolists.find(tl => tl.id === todolistId)
 
         if (todolist) {
+            dispatch(setLoadingStatus('loading'))
             todolistAPI.updateTodolist(todolistId, title)
                 .then((res) => {
                     dispatch(changeTodolistTitleAC(todolistId, title))
+                    dispatch(setLoadingStatus('succeeded'))
                 })
         }
     }

@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Menu } from '@mui/icons-material';
+import {Menu} from '@mui/icons-material';
 import {
     changeTodolistFilterAC,
     createTodolistTC,
@@ -31,35 +31,33 @@ export type TasksStateType = {
 }
 
 
-function AppWithRedux() : JSX.Element{
-    console.log('App is called')
+function AppWithRedux(): JSX.Element {
 
     const dispatch = useAppDispatch()
     const todoLists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useAppSelector<TasksStateType>(state => state.tasks)
 
-    useEffect( () => {
+    useEffect(() => {
         dispatch(getTodolistsTC())
-    }, [] )
+    }, [])
 
 
-    const changeTodoListFilter = useCallback( (filter: FilterValueType, todolistId: string) => {
+    const changeTodoListFilter = useCallback((filter: FilterValueType, todolistId: string) => {
         const action = changeTodolistFilterAC(todolistId, filter)
         dispatch(action)
     }, [dispatch])
 
-    const removeTodoList = useCallback( (todolistId: string) => {
+    const removeTodoList = useCallback((todolistId: string) => {
         dispatch(deleteTodolistTC(todolistId))
     }, [dispatch])
 
-    const changeTodoListTitle = useCallback( (todoListId: string, title: string) => {
+    const changeTodoListTitle = useCallback((todoListId: string, title: string) => {
         dispatch(updateTodolistTitleTC(todoListId, title))
     }, [dispatch])
 
-    const addTodolist = useCallback( (title: string) => {
+    const addTodolist = useCallback((title: string) => {
         dispatch(createTodolistTC(title))
     }, [dispatch])
-
 
 
     const addTask = useCallback((title: string, todoListId: string) => {
@@ -74,8 +72,6 @@ function AppWithRedux() : JSX.Element{
     const changeTaskTitle = (taskId: string, newTitle: string, todoListId: string) => {
         dispatch(updateTasksTC(todoListId, taskId, {title: newTitle}))
     }
-
-
 
 
     const todoListsComponents = todoLists.map(tl => {
@@ -101,11 +97,11 @@ function AppWithRedux() : JSX.Element{
         )
     })
 
-    // const status = useAppSelector<RequestStatusType>(state => state.app.status)
+    const status = useAppSelector<RequestStatusType>(state => state.app.status)
 
     return (
         <div className="App">
-            {/*<ErrorSnackbar/>*/}
+            <ErrorSnackbar/>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -118,9 +114,10 @@ function AppWithRedux() : JSX.Element{
                 </Toolbar>
             </AppBar>
 
-            <Box sx={{ width: '100%' }}>
-                <LinearProgress />
-            </Box>
+            {status === 'loading'
+                && <Box sx={{width: '100%'}}>
+                    <LinearProgress/>
+                </Box>}
 
             <AddItemForm maxLengthUserName={15} addItem={addTodolist} className='addItemForm'/>
             <div className={'todolists'}>

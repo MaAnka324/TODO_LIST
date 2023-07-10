@@ -15,7 +15,6 @@ const EditableSpan: FC<EditableSpanType> = React.memo((
         changeTitle,
         spanClasses
     }) => {
-    console.log('EditableSpan')
     const [editMode, setEditMode] = useState<boolean>(false)
     const [localTitle, setLocalTitle] = useState<string>(title)
 

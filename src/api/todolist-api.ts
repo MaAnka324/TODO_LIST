@@ -26,6 +26,12 @@ export type ResponseType<D = {}> = {
     data: D
 }
 
+export enum ResultCode {
+    SUCCESS = 0,
+    ERROR = 1,
+    ERROR_CAPTCHA= 10
+}
+
 export enum TaskStatuses {
     New,
     InProgress,

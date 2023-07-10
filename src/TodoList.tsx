@@ -33,7 +33,6 @@ type TodoListPropsType = {
 
 
 const TodoList: FC<TodoListPropsType> = React.memo((props): JSX.Element => {
-    console.log('TodoList is called')
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -61,7 +60,6 @@ const TodoList: FC<TodoListPropsType> = React.memo((props): JSX.Element => {
 
 
     const addTaskInput: RefObject<HTMLInputElement> = useRef(null)
-    console.log(addTaskInput)
 
     const setAllFilterValue = useCallback(() => props.changeTodoListFilter('All', props.todoListId), [props.changeTodoListFilter, props.todoListId])
     const setActiveFilterValue = useCallback(() => props.changeTodoListFilter('Active', props.todoListId), [props.changeTodoListFilter, props.todoListId])

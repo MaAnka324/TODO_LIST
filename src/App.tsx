@@ -14,9 +14,9 @@ function App() : JSX.Element{
     const todolistId_1 = v1()
     const todolistId_2 = v1()
     const [todoLists, setTodoLists] = useState<Array<TodolistDomainType>>([
-        {id: todolistId_1, title: "What to learn", filter: 'All',
+        {id: todolistId_1, title: "What to learn", filter: 'All', entityStatus: "idle",
             addedDate: '', order: 0},
-        {id: todolistId_2, title: "What to buy", filter: 'All',
+        {id: todolistId_2, title: "What to buy", filter: 'All',  entityStatus: "idle",
             addedDate: '', order: 0},
     ])
     const [tasks, setTasks] = useState<TasksStateType>({
@@ -112,6 +112,7 @@ function App() : JSX.Element{
             id: newTodoListId,
             title: title,
             filter: 'All',
+            entityStatus: "idle",
             addedDate: '',
             order: 0
         }

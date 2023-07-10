@@ -23,9 +23,9 @@ function AppWithReducer(): JSX.Element {
 
 
     const [todoLists, dispatchTodoListsReducer] = useReducer(todolistsReducer, [
-        {id: todolistId_1, title: "What to learn", filter: 'All',
+        {id: todolistId_1, title: "What to learn", filter: 'All',  entityStatus: "idle",
             addedDate: '', order: 0},
-        {id: todolistId_2, title: "What to buy", filter: 'All',
+        {id: todolistId_2, title: "What to buy", filter: 'All',  entityStatus: "idle",
             addedDate: '', order: 0},
     ])
     const [tasks, dispatchToTasksReducer] = useReducer(tasksReducer, {

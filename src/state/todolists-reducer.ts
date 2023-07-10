@@ -1,6 +1,6 @@
 import {todolistAPI, TodolistType} from "../api/todolist-api";
 import {AppActionsType, AppRootState, AppThunk} from "./store";
-import { setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
+import {RequestStatusType, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -38,6 +38,7 @@ export type FilterValueType = 'All' | 'Active' | 'Completed'
 
 export type TodolistDomainType = TodolistType & {
     filter: FilterValueType
+    entityStatus: RequestStatusType
 }
 
 
@@ -47,7 +48,11 @@ export const todolistsReducer = (state = initialState, action: TodolistsActionTy
             return state.filter(tl => tl.id != action.id)
         }
         case 'ADD-TODOLIST': {
-            const newTodolist: TodolistDomainType = {...action.todolist, filter: "All"}
+            const newTodolist: TodolistDomainType = {
+                ...action.todolist,
+                filter: "All",
+                entityStatus: 'idle'
+            }
             return [newTodolist, ...state]
         }
         case 'CHANGE-TODOLIST-TITLE': {
@@ -80,7 +85,8 @@ export const todolistsReducer = (state = initialState, action: TodolistsActionTy
             return action.todolists.map(tl => {
                 return {
                     ...tl,
-                    filter: "All"
+                    filter: "All",
+                    entityStatus: 'idle'
                 }
             })
         }

@@ -8,12 +8,14 @@ import {Button, IconButton} from "@mui/material";
 import {FilterValueType} from "./state/todolists-reducer";
 import {TaskStatuses, TasksType} from "./api/todolist-api";
 import {useAppDispatch} from "./state/store";
+import {RequestStatusType} from "./app/app-reducer";
 
 type TodoListPropsType = {
     todoListId: string
     filter: FilterValueType
     title: string
     tasks: TasksType[]
+    entityStatus: RequestStatusType
 
     removeTask: (taskId: string, todoListId: string) => void
     addTask: (title: string, todoListId: string) => void
@@ -84,9 +86,9 @@ const TodoList: FC<TodoListPropsType> = React.memo((props): JSX.Element => {
                 <IconButton
                     onClick={() => props.removeTodoList(props.todoListId)}
                     size='small'
+                    disabled={props.entityStatus === 'loading'}
                 >
                     <DeleteIcon/>
-
                 </IconButton>
 
             </h3>

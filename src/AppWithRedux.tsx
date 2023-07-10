@@ -84,6 +84,7 @@ function AppWithRedux(): JSX.Element {
                 key={tl.id}
                 todoListId={tl.id}
                 title={tl.title}
+                entityStatus={tl.entityStatus}
                 tasks={tasksForTodolist}
                 filter={tl.filter}
                 removeTodoList={removeTodoList}

@@ -9,8 +9,8 @@ import {TaskStatuses, TasksType} from "./api/todolist-api";
 type TasksListPropsType = {
     todoListId: string
     tasks: TasksType[]
-    removeTask : (taskId: string,  todoListId: string) => void
-    changeTaskStatus: (taskId: string, status: TaskStatuses,  todoListId: string) => void
+    removeTask: (taskId: string, todoListId: string) => void
+    changeTaskStatus: (taskId: string, status: TaskStatuses, todoListId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
 
 }
@@ -18,7 +18,7 @@ type TasksListPropsType = {
 const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
     const tasksItems: JSX.Element[] | JSX.Element =
         props.tasks.length
-            ? props.tasks.map((task)=> <Task
+            ? props.tasks.map((task) => <Task
                     key={task.id}
                     task={task}
                     changeTaskStatus={props.changeTaskStatus}
@@ -67,28 +67,27 @@ const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
 
 
 type TaskPropsType = {
-    removeTask : (taskId: string,  todoListId: string) => void
-    changeTaskStatus: (taskId: string, status: TaskStatuses,  todoListId: string) => void
+    removeTask: (taskId: string, todoListId: string) => void
+    changeTaskStatus: (taskId: string, status: TaskStatuses, todoListId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
     task: TasksType
     todoListId: string
 }
 
 
-export const Task = React.memo( (props: TaskPropsType) => {
+export const Task = React.memo((props: TaskPropsType) => {
 
     const removeTask = () => props.removeTask(props.task.id, props.todoListId)
     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-         const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
-
+        const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
         props.changeTaskStatus(props.task.id, status, props.todoListId)
     }
 
-    const changeTaskTitleHandler = useCallback( (title: string) => {
+    const changeTaskTitleHandler = useCallback((title: string) => {
         props.changeTaskTitle(props.task.id, title, props.todoListId)
     }, [props.task.id, props.changeTaskTitle, props.todoListId])
 
-    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+    const label = {inputProps: {'aria-label': 'Checkbox demo'}};
 
     return (
         <ListItem key={props.task.id}>
@@ -97,12 +96,6 @@ export const Task = React.memo( (props: TaskPropsType) => {
                       checked={props.task.status === TaskStatuses.Completed}
                       onChange={changeStatusHandler}
             />
-            {/*<input*/}
-            {/*    type="checkbox"*/}
-            {/*    checked={props.task.isDone}*/}
-            {/*    onChange={changeStatusHandler}*/}
-            {/*/>*/}
-
             <EditableSpan
                 title={props.task.title}
                 spanClasses={`task ${props.task.status ? 'task-done' : ''}`}
@@ -114,10 +107,8 @@ export const Task = React.memo( (props: TaskPropsType) => {
             >
                 <ClearIcon/>
             </IconButton>
-
         </ListItem>
     )
-
 })
 
 

@@ -164,12 +164,7 @@ export const getTodolistsTC = (): AppThunk => async dispatch => {
         dispatch(setTodolistsAC(res.data))
         dispatch(setLoadingStatus('succeeded'))
     } catch (e) {
-        if(axios.isAxiosError(e)){ //проверяет или этот error был сгенерирован при axios запросе // true or false
-
-        } else {
-
-        }
-        // throw new Error()
+        throw new Error()
     }
 }
 

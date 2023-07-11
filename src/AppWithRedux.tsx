@@ -114,12 +114,10 @@ function AppWithRedux(): JSX.Element {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-
             {status === 'loading'
                 && <Box sx={{width: '100%'}}>
                     <LinearProgress/>
                 </Box>}
-
             <AddItemForm maxLengthUserName={15} addItem={addTodolist} className='addItemForm'/>
             <div className={'todolists'}>
                 {todoListsComponents}

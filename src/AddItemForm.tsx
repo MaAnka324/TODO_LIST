@@ -1,6 +1,5 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {IconButton, TextField} from "@mui/material";
-import {AddCircleOutline} from "@mui/icons-material";
 import AddIcon from '@mui/icons-material/Add';
 
 
@@ -8,13 +7,15 @@ export type AddItemFormType = {
     maxLengthUserName: number
     addItem: (title: string) => void
     className?: string
+    disabled?: boolean
 }
 
-const AddItemForm: FC<AddItemFormType> =  React.memo( ({
-    maxLengthUserName,
-    addItem,
-    className
-                                          }) => {
+const AddItemForm: FC<AddItemFormType> = React.memo(({
+                                                         maxLengthUserName,
+                                                         addItem,
+                                                         className,
+                                                         disabled
+                                                     }) => {
 
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<boolean>(false)
@@ -24,11 +25,11 @@ const AddItemForm: FC<AddItemFormType> =  React.memo( ({
         setTitle((e.currentTarget.value))
     }
 
-    const addTask = () =>{
+    const addTask = () => {
         const trimmedTitle = title.trim()
-        if(trimmedTitle){
+        if (trimmedTitle) {
             addItem(trimmedTitle)
-        }else {
+        } else {
             setError(true)
         }
         setTitle('')
@@ -39,10 +40,10 @@ const AddItemForm: FC<AddItemFormType> =  React.memo( ({
 
     const userErrorMessage = error && <div style={{color: 'hotpink'}}>Title is required!!!!</div>
 
-    const userMaxLength = title.length > maxLengthUserName && <div style={{color: 'hotpink'}}>Task title is to long</div>
+    const userMaxLength = title.length > maxLengthUserName &&
+        <div style={{color: 'hotpink'}}>Task title is to long</div>
 
-    const isAddBtnDisable = !title.length || isUserMessageToLong || error
-
+    const isAddBtnDisable = !title.length || isUserMessageToLong || error || disabled
 
     return (
         <div className={className}>
@@ -52,23 +53,12 @@ const AddItemForm: FC<AddItemFormType> =  React.memo( ({
                 variant="outlined"
                 value={title}
                 onChange={changeLocalTitle}
-                onKeyDown={(e)=> e.key  === 'Enter' && addTask()}
+                onKeyDown={(e) => e.key === 'Enter' && addTask()}
+                disabled={disabled}
             />
-
-            {/*<input*/}
-            {/*    value={title}*/}
-            {/*    placeholder='Please, enter title'*/}
-            {/*    onChange={changeLocalTitle}*/}
-            {/*    onKeyDown={(e)=> e.key  === 'Enter' && addTask()}*/}
-            {/*/>*/}
-
-            {/*<button disabled={isAddBtnDisable} onClick={addTask}*/}
-            {/*>+</button>*/}
-
             <IconButton onClick={addTask} size='small' disabled={isAddBtnDisable}>
                 <AddIcon fontSize={"large"}/>
             </IconButton>
-
             {userMaxLength}
             {userErrorMessage}
         </div>

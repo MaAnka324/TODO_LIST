@@ -1,6 +1,6 @@
 import {todolistAPI, TodolistType} from "../api/todolist-api";
 import {AppActionsType, AppRootState, AppThunk} from "./store";
-import {RequestStatusType, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
+import {RequestStatusType, setAppError, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -30,6 +30,7 @@ export type TodolistsActionType = RemoveTodolistActionType
     | ChangeTodolistFilterActionType
     | SetTodolistsType
     | SetLoadingStatusType
+    | ReturnType<typeof changeEntityStatusAC>
 
 const initialState = [] as Array<TodolistDomainType>
 type InitialStateType = typeof initialState
@@ -90,6 +91,9 @@ export const todolistsReducer = (state = initialState, action: TodolistsActionTy
                 }
             })
         }
+        case "CHANGE-ENTITY-STATUS": {
+            return state.map(tl => tl.id === action.todoId ? {...tl, entityStatus: action.entityStatus} : tl)
+        }
         default:
             return state
     }
@@ -100,6 +104,14 @@ export const removeTodolistAC = (id: string): RemoveTodolistActionType => {
         type: 'REMOVE-TODOLIST',
         id
     }
+}
+
+export const changeEntityStatusAC = (todoId: string, entityStatus: RequestStatusType) => {
+    return {
+        type: 'CHANGE-ENTITY-STATUS',
+        todoId,
+        entityStatus
+    } as const
 }
 
 export const addTodolistAC = (todolist: TodolistType): AddTodolistActionType => {
@@ -160,10 +172,16 @@ export const getTodolistsTC = (): AppThunk => async dispatch => {
 export const deleteTodolistTC = (todoId: string): AppThunk => {
     return (dispatch) => {
         dispatch(setLoadingStatus('loading'))
+        dispatch(changeEntityStatusAC(todoId, 'loading'))
         todolistAPI.deleteTodolist(todoId)
             .then((res) => {
                 dispatch(removeTodolistAC(todoId))
                 dispatch(setLoadingStatus('succeeded'))
+            })
+            .catch(() => {
+                dispatch(changeEntityStatusAC(todoId, 'failed'))
+                dispatch(setLoadingStatus('failed'))
+                dispatch(setAppError('Something wrong, return later'))
             })
     }
 }

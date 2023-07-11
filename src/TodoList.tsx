@@ -92,7 +92,11 @@ const TodoList: FC<TodoListPropsType> = React.memo((props): JSX.Element => {
                 </IconButton>
 
             </h3>
-            <AddItemForm maxLengthUserName={15} addItem={addTask}/>
+            <AddItemForm
+                maxLengthUserName={15}
+                addItem={addTask}
+                disabled={props.entityStatus === 'loading'}
+            />
             <TasksList
                 todoListId={props.todoListId}
                 tasks={tasksForTodolist}

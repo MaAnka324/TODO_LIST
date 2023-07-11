@@ -2,6 +2,7 @@ import {ResultCode, todolistAPI, TodolistType} from "../api/todolist-api";
 import {AppActionsType, AppRootState, AppThunk} from "./store";
 import {RequestStatusType, setAppError, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error.utils";
+import axios from "axios";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -163,7 +164,12 @@ export const getTodolistsTC = (): AppThunk => async dispatch => {
         dispatch(setTodolistsAC(res.data))
         dispatch(setLoadingStatus('succeeded'))
     } catch (e) {
-        throw new Error()
+        if(axios.isAxiosError(e)){ //проверяет или этот error был сгенерирован при axios запросе // true or false
+
+        } else {
+
+        }
+        // throw new Error()
     }
 }
 
@@ -195,7 +201,6 @@ export const createTodolistTC = (title: string): AppThunk => {
                 } else {
                     handleServerAppError<{ item: TodolistType }>(dispatch, res.data)
                 }
-
             })
     }
 }

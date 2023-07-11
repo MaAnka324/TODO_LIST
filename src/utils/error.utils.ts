@@ -12,8 +12,8 @@ export const handleServerAppError = <T> (dispatch: ErrorUtilsDispatchType, data:
     dispatch(setLoadingStatus('failed'))
 }
 
-export const handleServerNetworkError = (dispatch: ErrorUtilsDispatchType, error: { message: string }) => {
-    dispatch(setAppError(error.message))
+export const handleServerNetworkError = (dispatch: ErrorUtilsDispatchType, error: string ) => {
+    dispatch(setAppError(error))
     dispatch(setLoadingStatus('failed'))
 }
 

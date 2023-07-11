@@ -5,6 +5,7 @@ import {ResultCode, TaskPriorities, TaskStatuses, TasksType, todolistAPI, Update
 import {AppRootState, AppThunk} from "./store";
 import {setAppError, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error.utils";
+import axios, {AxiosError} from "axios";
 
 type RemoveTaskActionType = {
     type: 'REMOVE-TASK'
@@ -175,6 +176,12 @@ export const _createTasksTC = (todoId: string, title: string): AppThunk => {
     }
 }
 
+type ErrorType = {
+    'statusCode': number
+    'message': string[]
+    'error': string
+}
+
 export const createTasksTC = (todoId: string, title: string): AppThunk => (dispatch) => {
     dispatch(setLoadingStatus('loading'))
     todolistAPI.createTask(todoId, title)
@@ -187,8 +194,9 @@ export const createTasksTC = (todoId: string, title: string): AppThunk => (dispa
                 handleServerAppError<{ item: TasksType }>(dispatch, res.data)
             }
         })
-        .catch((e) => {
-            handleServerNetworkError(dispatch, e)
+        .catch((e: AxiosError<ErrorType>) => {
+            const err = e.response ? e.response.data.message[0] : e.message
+            handleServerNetworkError(dispatch, err)
         })
 }
 
@@ -201,8 +209,8 @@ interface FlexType {
     status?: TaskStatuses
 }
 
-export const updateTasksTC = (todolistId: string, taskId: string, data: FlexType): AppThunk => {
-    return (dispatch, getState: () => AppRootState) => {
+export const updateTasksTC = (todolistId: string, taskId: string, data: FlexType): AppThunk =>
+    async (dispatch, getState: () => AppRootState) => {
 
         const task = getState().tasks[todolistId].find(t => t.id === taskId)
 
@@ -217,24 +225,50 @@ export const updateTasksTC = (todolistId: string, taskId: string, data: FlexType
                 ...data
             }
             dispatch(setLoadingStatus('loading'))
-            todolistAPI.updateTask(todolistId, taskId, model)
-                .then((res) => {
-                    if (res.data.resultCode === ResultCode.SUCCESS) {
-                        dispatch(statusTaskAC(taskId, model, todolistId))
-                        dispatch(setLoadingStatus('succeeded'))
-                    } else {
-                        if (res.data.messages.length) {
-                            dispatch(setAppError(res.data.messages[0]))
-                        } else {
-                            dispatch(setAppError('Some error occurred'))
-                        }
-                        dispatch(setLoadingStatus('failed'))
-                    }
 
-                })
-                .catch((e) => {
-                    handleServerNetworkError(dispatch, e)
-                })
+            try {
+                const res = await todolistAPI.updateTask(todolistId, taskId, model)
+                if (res.data.resultCode === ResultCode.SUCCESS) {
+                    dispatch(statusTaskAC(taskId, model, todolistId))
+                    dispatch(setLoadingStatus('succeeded'))
+                } else {
+                    if (res.data.messages.length) {
+                        dispatch(setAppError(res.data.messages[0]))
+                    } else {
+                        dispatch(setAppError('Some error occurred'))
+                    }
+                    dispatch(setLoadingStatus('failed'))
+                }
+            } catch (e) {
+                let errorMessage: string
+                if(axios.isAxiosError<ErrorType>(e)) {
+                    // isAxiosError проверяет или этот error был сгенерирован
+                    // при axios запросе либо при синхронном коде // true or false
+                    errorMessage = e.response!.data.message[0]
+                } else {
+                    errorMessage = (e as Error).message
+                }
+                handleServerNetworkError(dispatch, errorMessage)
+            }
+
+            // todolistAPI.updateTask(todolistId, taskId, model)
+            //     .then((res) => {
+            //         if (res.data.resultCode === ResultCode.SUCCESS) {
+            //             dispatch(statusTaskAC(taskId, model, todolistId))
+            //             dispatch(setLoadingStatus('succeeded'))
+            //         } else {
+            //             if (res.data.messages.length) {
+            //                 dispatch(setAppError(res.data.messages[0]))
+            //             } else {
+            //                 dispatch(setAppError('Some error occurred'))
+            //             }
+            //             dispatch(setLoadingStatus('failed'))
+            //         }
+            //
+            //     })
+            //     .catch((e) => {
+            //         handleServerNetworkError(dispatch, e)
+            //     })
         }
+
     }
-}

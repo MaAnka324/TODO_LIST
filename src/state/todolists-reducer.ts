@@ -1,6 +1,7 @@
-import {todolistAPI, TodolistType} from "../api/todolist-api";
+import {ResultCode, todolistAPI, TodolistType} from "../api/todolist-api";
 import {AppActionsType, AppRootState, AppThunk} from "./store";
 import {RequestStatusType, setAppError, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error.utils";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -147,8 +148,6 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
 }
 
 
-
-
 export const _getTodolistsTC = (): AppThunk => {
     return (dispatch) => {
         todolistAPI.getTodolist()
@@ -163,8 +162,7 @@ export const getTodolistsTC = (): AppThunk => async dispatch => {
         const res = await todolistAPI.getTodolist()
         dispatch(setTodolistsAC(res.data))
         dispatch(setLoadingStatus('succeeded'))
-    }
-    catch (e) {
+    } catch (e) {
         throw new Error()
     }
 }
@@ -191,8 +189,13 @@ export const createTodolistTC = (title: string): AppThunk => {
         dispatch(setLoadingStatus('loading'))
         todolistAPI.createTodolist(title)
             .then((res) => {
-                dispatch(addTodolistAC(res.data.data.item))
-                dispatch(setLoadingStatus('succeeded'))
+                if (res.data.resultCode === ResultCode.SUCCESS) {
+                    dispatch(addTodolistAC(res.data.data.item))
+                    dispatch(setLoadingStatus('succeeded'))
+                } else {
+                    handleServerAppError<{ item: TodolistType }>(dispatch, res.data)
+                }
+
             })
     }
 }

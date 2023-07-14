@@ -1,15 +1,8 @@
-import React, {useReducer, useState} from 'react';
+import React, {useReducer} from 'react';
 import './App.css';
 import {v1} from "uuid";
-import AddItemForm from "./AddItemForm";
-import {
-    addTodolistAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC, FilterValueType,
-    removeTodolistAC,
-    todolistsReducer
-} from "./state/todolists-reducer";
-import {addTaskAC, changeTitleTaskAC, removeTaskAC, statusTaskAC, tasksReducer} from "./state/tasks-reducer";
+import {FilterValueType, todolistsReducer} from "./state/todolists-reducer";
+import {tasksReducer} from "./state/tasks-reducer";
 import {TaskPriorities, TaskStatuses, TasksType} from "./api/todolist-api";
 
 
@@ -31,29 +24,29 @@ function AppWithReducer(): JSX.Element {
     const [tasks, dispatchToTasksReducer] = useReducer(tasksReducer, {
         [todolistId_1]: [
             {
-                id: v1(), title: "HTML & CSS",
+                id: v1(), title: "HTML & CSS", entityTaskStatus: 'idle',
                 status: TaskStatuses.New, todoListId: todolistId_1, startDate: '',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''
             },
             {
-                id: v1(), title: "ES6 & TS",
+                id: v1(), title: "ES6 & TS", entityTaskStatus: 'idle',
                 status: TaskStatuses.Completed, todoListId: todolistId_1, startDate: '',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''
             },
             {
-                id: v1(), title: "React & Redux",
+                id: v1(), title: "React & Redux", entityTaskStatus: 'idle',
                 status: TaskStatuses.Completed, todoListId: todolistId_1, startDate: '',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Hi, description: ''
             },
         ],
         [todolistId_2]: [
             {
-                id: v1(), title: "MILK",
+                id: v1(), title: "MILK", entityTaskStatus: 'idle',
                 status: TaskStatuses.Completed, todoListId: todolistId_2, startDate: '',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''
             },
             {
-                id: v1(), title: "BREAD",
+                id: v1(), title: "BREAD", entityTaskStatus: 'idle',
                 status: TaskStatuses.New, todoListId: todolistId_2, startDate: '',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''
             },

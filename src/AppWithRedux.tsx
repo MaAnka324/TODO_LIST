@@ -76,8 +76,8 @@ function AppWithRedux(): JSX.Element {
 
     const todoListsComponents = todoLists.map(tl => {
         // const filteredTasks: Array<TaskType> = getFilteredTasks(tasks[tl.id], tl.filter)
-        let allTodolistTasks = tasks[tl.id]
-        let tasksForTodolist = allTodolistTasks
+        let tasksForTodolist = tasks[tl.id]
+
 
         return (
             <TodoList

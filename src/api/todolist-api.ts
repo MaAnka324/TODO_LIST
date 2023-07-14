@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from 'axios'
+import {RequestStatusType} from "../app/app-reducer";
 
 const settings = {
     withCredentials: true,
@@ -47,7 +48,11 @@ export enum TaskPriorities {
     Later
 }
 
-export type TasksType = {
+export type TasksType = TaskType &{
+    entityTaskStatus: RequestStatusType
+}
+
+export type TaskType = {
     description: string
     title: string
     status: TaskStatuses

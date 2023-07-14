@@ -8,12 +8,14 @@ type EditableSpanType = {
     changeTitle: (title: string) => void
     spanClasses?: string
     inputClasses?: string
+    disabled?: boolean
 }
 const EditableSpan: FC<EditableSpanType> = React.memo((
     {
         title,
         changeTitle,
-        spanClasses
+        spanClasses,
+        disabled
     }) => {
     const [editMode, setEditMode] = useState<boolean>(false)
     const [localTitle, setLocalTitle] = useState<string>(title)
@@ -39,6 +41,7 @@ const EditableSpan: FC<EditableSpanType> = React.memo((
                          onChange={changeLocalTitle}
                          autoFocus={true}
                          onBlur={offEditMode}
+                         disabled={disabled}
             />
             : <span className={spanClasses}
                     onDoubleClick={onEditMode}>{title}</span>

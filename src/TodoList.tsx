@@ -27,12 +27,6 @@ type TodoListPropsType = {
     changeTodoListTitle: (title: string, todoListId: string) => void
 }
 
-// export type TaskType = {
-//     id: string
-//     title: string
-//     isDone: boolean
-// }
-
 
 const TodoList: FC<TodoListPropsType> = React.memo((props): JSX.Element => {
     const dispatch = useAppDispatch()
@@ -41,8 +35,6 @@ const TodoList: FC<TodoListPropsType> = React.memo((props): JSX.Element => {
         dispatch(getTasksTC(props.todoListId))
     }, [])
 
-    // const dispatch = useDispatch()
-    // const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.todoListId ])
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.todoListId)

@@ -4,11 +4,13 @@ import {IconButton, List, ListItem} from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import Checkbox from '@mui/material/Checkbox';
 import {TaskStatuses, TasksType} from "./api/todolist-api";
+import {RequestStatusType} from "./app/app-reducer";
 
 
 type TasksListPropsType = {
     todoListId: string
     tasks: TasksType[]
+
     removeTask: (taskId: string, todoListId: string) => void
     changeTaskStatus: (taskId: string, status: TaskStatuses, todoListId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
@@ -21,41 +23,12 @@ const TasksList: FC<TasksListPropsType> = (props): JSX.Element => {
             ? props.tasks.map((task) => <Task
                     key={task.id}
                     task={task}
+                    entityTaskStatus={task.entityTaskStatus}
                     changeTaskStatus={props.changeTaskStatus}
                     changeTaskTitle={props.changeTaskTitle}
                     removeTask={props.removeTask}
                     todoListId={props.todoListId}
                 />
-
-                // const removeTask = () => props.removeTask(task.id, props.todoListId)
-                // const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(task.id, e.currentTarget.checked, props.todoListId)
-                //
-                // const changeTaskTitleHandler = (title: string) => {
-                //     props.changeTaskTitle(task.id, title, props.todoListId)
-                // }
-                //
-                // return (
-                //     <ListItem key={task.id}>
-                //         <input
-                //             type="checkbox"
-                //             checked={task.isDone}
-                //             onChange={changeStatusHandler}
-                //         />
-                //
-                //         <EditableSpan
-                //             title={task.title}
-                //             spanClasses={`task ${task.isDone ? 'task-done' : ''}`}
-                //             changeTitle={changeTaskTitleHandler}
-                //         />
-                //         <IconButton
-                //             onClick={removeTask}
-                //             size='small'
-                //         >
-                //             <HighlightOff/>
-                //         </IconButton>
-                //
-                //     </ListItem>
-                // )
             )
             : <span>Your taskslist is empty</span>
     return (
@@ -72,10 +45,13 @@ type TaskPropsType = {
     changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
     task: TasksType
     todoListId: string
+    entityTaskStatus: RequestStatusType
 }
 
 
 export const Task = React.memo((props: TaskPropsType) => {
+
+    const disable = props.entityTaskStatus === 'loading'
 
     const removeTask = () => props.removeTask(props.task.id, props.todoListId)
     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -89,21 +65,25 @@ export const Task = React.memo((props: TaskPropsType) => {
 
     const label = {inputProps: {'aria-label': 'Checkbox demo'}};
 
+
     return (
         <ListItem key={props.task.id}>
 
             <Checkbox {...label} defaultChecked
                       checked={props.task.status === TaskStatuses.Completed}
                       onChange={changeStatusHandler}
+                      disabled={disable}
             />
             <EditableSpan
                 title={props.task.title}
                 spanClasses={`task ${props.task.status ? 'task-done' : ''}`}
                 changeTitle={changeTaskTitleHandler}
+                disabled={disable}
             />
             <IconButton
                 onClick={removeTask}
                 size='small'
+                disabled={disable}
             >
                 <ClearIcon/>
             </IconButton>

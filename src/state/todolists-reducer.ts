@@ -1,8 +1,7 @@
 import {ResultCode, todolistAPI, TodolistType} from "../api/todolist-api";
-import {AppActionsType, AppRootState, AppThunk} from "./store";
+import {AppRootState, AppThunk} from "./store";
 import {RequestStatusType, setAppError, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error.utils";
-import axios from "axios";
+import {handleServerAppError} from "../utils/error.utils";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -94,7 +93,9 @@ export const todolistsReducer = (state = initialState, action: TodolistsActionTy
             })
         }
         case "CHANGE-ENTITY-STATUS": {
-            return state.map(tl => tl.id === action.todoId ? {...tl, entityStatus: action.entityStatus} : tl)
+            return state.map(tl => tl.id === action.todoId
+                ? {...tl, entityStatus: action.entityStatus}
+                : tl)
         }
         default:
             return state

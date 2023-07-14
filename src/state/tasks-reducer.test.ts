@@ -1,5 +1,4 @@
-import {addTaskAC, changeTitleTaskAC, removeTaskAC, tasksReducer} from "./tasks-reducer";
-import {TasksStateType} from "../App";
+import {addTaskAC, changeTitleTaskAC, removeTaskAC, tasksReducer, TasksStateType} from "./tasks-reducer";
 import {addTodolistAC, removeTodolistAC, setTodolistsAC, TodolistDomainType} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
 import {v1} from "uuid";
@@ -17,18 +16,18 @@ beforeEach( () => {
     startState = {
         'todolistId_1': [
             {id: '1', title: "HTML & CSS",
-                status: TaskStatuses.Completed, todoListId: 'todolistId_1', startDate: '',
+                status: TaskStatuses.Completed, todoListId: 'todolistId_1', startDate: '', entityTaskStatus: 'idle',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''},
             {id: '2', title: "ES6 & TS",
-                status: TaskStatuses.New, todoListId: 'todolistId_1', startDate: '',
+                status: TaskStatuses.New, todoListId: 'todolistId_1', startDate: '', entityTaskStatus: 'idle',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''},
         ],
         'todolistId_2': [
             {id: '1', title: "MILK",
-                status: TaskStatuses.New, todoListId: 'todolistId_2', startDate: '',
+                status: TaskStatuses.New, todoListId: 'todolistId_2', startDate: '', entityTaskStatus: 'idle',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''},
             {id: '2', title: "BREAD",
-                status: TaskStatuses.Completed, todoListId: 'todolistId_2', startDate: '',
+                status: TaskStatuses.Completed, todoListId: 'todolistId_2', startDate: '', entityTaskStatus: 'idle',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''},
         ]
     }
@@ -72,7 +71,8 @@ test('correct task should be added', () => {
         order: 0,
         priority: 0,
         startDate: '',
-        id: 'abc'
+        id: 'abc',
+        entityTaskStatus: 'idle',
     })
 
     const endState = tasksReducer(startState, action)

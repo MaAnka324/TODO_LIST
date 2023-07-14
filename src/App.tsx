@@ -6,7 +6,7 @@ import {TaskPriorities, TaskStatuses, TasksType} from "./api/todolist-api";
 import {FilterValueType, TodolistDomainType} from "./state/todolists-reducer";
 
 
-export type TasksStateType = {
+type TasksStateType = {
     [todolistId: string]: Array<TasksType>
 }
 
@@ -22,18 +22,18 @@ function App() : JSX.Element{
     const [tasks, setTasks] = useState<TasksStateType>({
         [todolistId_1]: [
             {id: v1(), title: "HTML & CSS",
-                status: TaskStatuses.Completed, todoListId: todolistId_1, startDate: '',
+                status: TaskStatuses.Completed, todoListId: todolistId_1, startDate: '', entityTaskStatus: 'idle',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''},
             {id: v1(), title: "React & Redux",
-                status: TaskStatuses.New, todoListId: todolistId_1, startDate: '',
+                status: TaskStatuses.New, todoListId: todolistId_1, startDate: '', entityTaskStatus: 'idle',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''}
         ],
         [todolistId_2]: [
             {id: v1(), title: "MILK",
-                status: TaskStatuses.Completed, todoListId: todolistId_2, startDate: '',
+                status: TaskStatuses.Completed, todoListId: todolistId_2, startDate: '', entityTaskStatus: 'idle',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''},
             {id: v1(), title: "BREAD",
-                status: TaskStatuses.Completed, todoListId: todolistId_2, startDate: '',
+                status: TaskStatuses.Completed, todoListId: todolistId_2, startDate: '', entityTaskStatus: 'idle',
                 deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low, description: ''},
         ]
     })
@@ -56,7 +56,8 @@ function App() : JSX.Element{
             addedDate: '',
             order: 0,
             priority: TaskPriorities.Low,
-            description: ''
+            description: '',
+            entityTaskStatus: 'idle'
         }
 
         const tasksForUpdate: Array<TasksType> = tasks[todolistId]

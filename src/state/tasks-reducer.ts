@@ -1,9 +1,8 @@
-import {TasksStateType} from "../App";
 
 import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsType} from "./todolists-reducer";
 import {ResultCode, TaskPriorities, TaskStatuses, TasksType, todolistAPI, UpdateTaskModel} from "../api/todolist-api";
 import {AppRootState, AppThunk} from "./store";
-import {setAppError, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
+import {RequestStatusType, setAppError, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error.utils";
 import axios, {AxiosError} from "axios";
 
@@ -40,10 +39,15 @@ export type TasksActionType = RemoveTaskActionType
     | RemoveTodolistActionType
     | SetTodolistsType
     | ReturnType<typeof setTasksAC>
+    | ReturnType<typeof changeEntityTaskStatusAC>
     | SetLoadingStatusType
 
 const initialState = {} as TasksStateType
 type InitialStateType = typeof initialState
+
+export type TasksStateType = {
+    [todolistId: string]: Array<TasksType>
+}
 
 
 export const tasksReducer = (state = initialState, action: TasksActionType): InitialStateType => {
@@ -96,8 +100,18 @@ export const tasksReducer = (state = initialState, action: TasksActionType): Ini
         case "SET-TASKS": {
             return {
                 ...state,
-                [action.todoId]: action.tasks
+                [action.todoId]: action.tasks.map(el => {
+                    return { ...el, entityTaskStatus: 'idle'  }
+                })
             }
+        }
+        case "CHANGE-ENTITY-TASK-STATUS": {
+            const stateCopy = {...state}
+            const task = stateCopy[action.todoId]
+            stateCopy[action.todoId] = task.map(t => t.id === action.taskId
+            ? {...t, entityTaskStatus: action.entityStatus}
+            : t)
+            return stateCopy
         }
         default:
             return state
@@ -134,6 +148,14 @@ export const changeTitleTaskAC = (taskId: string, title: string, todolistId: str
         taskId
     }
 }
+export const changeEntityTaskStatusAC = (todoId: string, taskId: string, entityStatus: RequestStatusType) => {
+    return {
+        type: 'CHANGE-ENTITY-TASK-STATUS',
+        todoId,
+        taskId,
+        entityStatus
+    } as const
+}
 export const setTasksAC = (todoId: string, tasks: TasksType[]) => {
     return {
         type: 'SET-TASKS',
@@ -157,10 +179,14 @@ export const getTasksTC = (todoId: string): AppThunk => {
 export const deleteTasksTC = (todoId: string, taskId: string): AppThunk => {
     return (dispatch) => {
         dispatch(setLoadingStatus('loading'))
+        dispatch(changeEntityTaskStatusAC(todoId, taskId, 'loading'))
         todolistAPI.deleteTask(todoId, taskId)
             .then((res) => {
                 dispatch(removeTaskAC(taskId, todoId))
                 dispatch(setLoadingStatus('succeeded'))
+            })
+            .catch(() => {
+                dispatch(changeEntityTaskStatusAC(todoId, taskId, 'failed'))
             })
     }
 }
@@ -225,6 +251,7 @@ export const updateTasksTC = (todolistId: string, taskId: string, data: FlexType
                 ...data
             }
             dispatch(setLoadingStatus('loading'))
+            dispatch(changeEntityTaskStatusAC(todolistId, taskId, 'loading'))
 
             try {
                 const res = await todolistAPI.updateTask(todolistId, taskId, model)

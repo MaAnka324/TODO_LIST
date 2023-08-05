@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
 import {RequestStatusType} from "../app/app-reducer";
+import {LoginType} from "../features/Login";
 
 const settings = {
     withCredentials: true,
@@ -12,6 +13,25 @@ const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     ...settings
 })
+
+
+export const authAPI = {
+    me() {
+        return instance.get<ResponseType<UserData>>(`auth/me`)
+    },
+    login(data: LoginType) {
+        return instance.post<ResponseType<{ item: TodolistType }>, AxiosResponse<ResponseType<{ item: TodolistType }>>, LoginType>(
+            `todo-lists`,
+            data
+        )
+    }
+}
+
+type UserData = {
+    id: number
+    email: string
+    login: string
+}
 
 export type TodolistType = {
     id: string

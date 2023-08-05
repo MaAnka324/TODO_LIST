@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import {Menu} from '@mui/icons-material';
-import {useAppSelector} from "./state/store";
+import {useAppDispatch, useAppSelector} from "./state/store";
 import {TasksType} from "./api/todolist-api";
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -15,6 +15,7 @@ import {RequestStatusType} from "./app/app-reducer";
 import {Route, Routes} from "react-router-dom";
 import {Login} from "./features/Login";
 import TodoLists from "./TodoLists";
+import {meTC} from "./features/auth-reducer";
 
 
 export type TasksStateType = {
@@ -23,7 +24,12 @@ export type TasksStateType = {
 
 function AppWithRedux(): JSX.Element {
 
+    const dispatch = useAppDispatch()
     const status = useAppSelector<RequestStatusType>(state => state.app.status)
+
+    useEffect(() => {
+        dispatch(meTC())
+    }, [])
 
     return (
         <div className="App">

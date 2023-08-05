@@ -12,12 +12,15 @@ import {TaskStatuses} from "./api/todolist-api";
 import TodoList from "./TodoList";
 import {TasksStateType} from "./AppWithRedux";
 import AddItemForm from "./AddItemForm";
+import {Navigate} from "react-router-dom";
 
 const TodoLists = () => {
 
     const dispatch = useAppDispatch()
     const todoLists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useAppSelector<TasksStateType>(state => state.tasks)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
 
     useEffect(() => {
         dispatch(getTodolistsTC())
@@ -79,6 +82,8 @@ const TodoLists = () => {
             />
         )
     })
+
+    if(!isLoggedIn) return <Navigate to={'/login'}/>
 
     return (
         <div>

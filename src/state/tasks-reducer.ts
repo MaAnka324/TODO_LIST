@@ -2,7 +2,7 @@
 import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsType} from "./todolists-reducer";
 import {ResultCode, TaskPriorities, TaskStatuses, TasksType, todolistAPI, UpdateTaskModel} from "../api/todolist-api";
 import {AppRootState, AppThunk} from "./store";
-import {RequestStatusType, setAppError, setLoadingStatus, SetLoadingStatusType} from "../app/app-reducer";
+import {RequestStatusType, setAppErrorAC, setLoadingStatusAC, SetLoadingStatusType} from "../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error.utils";
 import axios, {AxiosError} from "axios";
 
@@ -167,23 +167,23 @@ export const setTasksAC = (todoId: string, tasks: TasksType[]) => {
 
 export const getTasksTC = (todoId: string): AppThunk => {
     return (dispatch) => {
-        dispatch(setLoadingStatus('loading'))
+        dispatch(setLoadingStatusAC('loading'))
         todolistAPI.getTasks(todoId)
             .then((res) => {
                 dispatch(setTasksAC(todoId, res.data.items))
-                dispatch(setLoadingStatus('succeeded'))
+                dispatch(setLoadingStatusAC('succeeded'))
             })
     }
 }
 
 export const deleteTasksTC = (todoId: string, taskId: string): AppThunk => {
     return (dispatch) => {
-        dispatch(setLoadingStatus('loading'))
+        dispatch(setLoadingStatusAC('loading'))
         dispatch(changeEntityTaskStatusAC(todoId, taskId, 'loading'))
         todolistAPI.deleteTask(todoId, taskId)
             .then((res) => {
                 dispatch(removeTaskAC(taskId, todoId))
-                dispatch(setLoadingStatus('succeeded'))
+                dispatch(setLoadingStatusAC('succeeded'))
             })
             .catch(() => {
                 dispatch(changeEntityTaskStatusAC(todoId, taskId, 'failed'))
@@ -193,11 +193,11 @@ export const deleteTasksTC = (todoId: string, taskId: string): AppThunk => {
 
 export const _createTasksTC = (todoId: string, title: string): AppThunk => {
     return (dispatch) => {
-        dispatch(setLoadingStatus('loading'))
+        dispatch(setLoadingStatusAC('loading'))
         todolistAPI.createTask(todoId, title)
             .then((res) => {
                 dispatch(addTaskAC(res.data.data.item))
-                dispatch(setLoadingStatus('succeeded'))
+                dispatch(setLoadingStatusAC('succeeded'))
             })
     }
 }
@@ -209,13 +209,13 @@ type ErrorType = {
 }
 
 export const createTasksTC = (todoId: string, title: string): AppThunk => (dispatch) => {
-    dispatch(setLoadingStatus('loading'))
+    dispatch(setLoadingStatusAC('loading'))
     todolistAPI.createTask(todoId, title)
         .then(res => {
             if (res.data.resultCode === ResultCode.SUCCESS) {
                 const task = res.data.data.item
                 dispatch(addTaskAC(task))
-                dispatch(setLoadingStatus('succeeded'))
+                dispatch(setLoadingStatusAC('succeeded'))
             } else {
                 handleServerAppError<{ item: TasksType }>(dispatch, res.data)
             }
@@ -250,21 +250,21 @@ export const updateTasksTC = (todolistId: string, taskId: string, data: FlexType
                 status: task.status,
                 ...data
             }
-            dispatch(setLoadingStatus('loading'))
+            dispatch(setLoadingStatusAC('loading'))
             dispatch(changeEntityTaskStatusAC(todolistId, taskId, 'loading'))
 
             try {
                 const res = await todolistAPI.updateTask(todolistId, taskId, model)
                 if (res.data.resultCode === ResultCode.SUCCESS) {
                     dispatch(statusTaskAC(taskId, model, todolistId))
-                    dispatch(setLoadingStatus('succeeded'))
+                    dispatch(setLoadingStatusAC('succeeded'))
                 } else {
                     if (res.data.messages.length) {
-                        dispatch(setAppError(res.data.messages[0]))
+                        dispatch(setAppErrorAC(res.data.messages[0]))
                     } else {
-                        dispatch(setAppError('Some error occurred'))
+                        dispatch(setAppErrorAC('Some error occurred'))
                     }
-                    dispatch(setLoadingStatus('failed'))
+                    dispatch(setLoadingStatusAC('failed'))
                 }
             } catch (e) {
                 let errorMessage: string

@@ -15,7 +15,8 @@ import {RequestStatusType} from "./app/app-reducer";
 import {Route, Routes} from "react-router-dom";
 import {Login} from "./features/Login";
 import TodoLists from "./TodoLists";
-import {meTC} from "./features/auth-reducer";
+import {logOutTC, meTC} from "./features/auth-reducer";
+import {CircularProgress} from "@mui/material";
 
 
 export type TasksStateType = {
@@ -26,10 +27,25 @@ function AppWithRedux(): JSX.Element {
 
     const dispatch = useAppDispatch()
     const status = useAppSelector<RequestStatusType>(state => state.app.status)
+    const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+
+    const logOutHandler = () => {
+        dispatch(logOutTC())
+    }
 
     useEffect(() => {
         dispatch(meTC())
     }, [])
+
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
+
+
 
     return (
         <div className="App">
@@ -42,7 +58,7 @@ function AppWithRedux(): JSX.Element {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button onClick={logOutHandler} color="inherit">Log out</Button>}
                 </Toolbar>
                 {status === 'loading'
                     && <Box sx={{width: '100%'}}>

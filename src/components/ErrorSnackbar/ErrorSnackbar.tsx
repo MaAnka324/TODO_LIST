@@ -6,7 +6,7 @@ import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useSelector} from "react-redux";
 import {AppRootState, useAppDispatch} from "../../state/store";
 import {setEngine} from "crypto";
-import {setAppError} from "../../app/app-reducer";
+import {setAppErrorAC} from "../../app/app-reducer";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -26,7 +26,7 @@ export const ErrorSnackbar = () => {
             return;
         }
 
-        dispatch(setAppError(null))
+        dispatch(setAppErrorAC(null))
         // setOpen(false);
     };
 

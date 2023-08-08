@@ -4,7 +4,7 @@ import './index.css';
 import AppWithRedux from "./AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./state/store";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, HashRouter} from "react-router-dom";
 
 
 const root = ReactDOM.createRoot(
@@ -12,11 +12,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     // <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
         <Provider store={store}>
             <AppWithRedux/>
         </Provider>
-    </BrowserRouter>
+    </HashRouter>
     // </React.StrictMode>
 );
 

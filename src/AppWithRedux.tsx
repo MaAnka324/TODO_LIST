@@ -56,7 +56,7 @@ function AppWithRedux(): JSX.Element {
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">
-                        News
+                        {/*News*/}
                     </Typography>
                     {isLoggedIn && <Button onClick={logOutHandler} color="inherit">Log out</Button>}
                 </Toolbar>

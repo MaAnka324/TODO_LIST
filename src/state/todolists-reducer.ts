@@ -2,6 +2,7 @@ import {ResultCode, todolistAPI, TodolistType} from "../api/todolist-api";
 import {AppRootState, AppThunk} from "./store";
 import {RequestStatusType, setAppErrorAC, setLoadingStatusAC, SetLoadingStatusType} from "../app/app-reducer";
 import {handleServerAppError} from "../utils/error.utils";
+import {getTasksTC} from "./tasks-reducer";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
@@ -150,16 +151,32 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
 }
 
 
-export const _getTodolistsTC = (): AppThunk => {
+export type ClearTodolistsDataType = ReturnType<typeof setTodolistsAC>
+
+export const clearTodolistsDataAC = () => {
+    return {
+        type: 'CLEAR-DATA'
+    } as const
+}
+
+
+export const getTodolistsTC = (): AppThunk => {
     return (dispatch) => {
         todolistAPI.getTodolist()
             .then((res) => {
                 dispatch(setTodolistsAC(res.data))
+                return res.data
+            })
+            .then((todos) => {
+                console.log(todos)
+                todos.forEach((tl) => {
+                    dispatch(getTasksTC(tl.id))
+                })
             })
     }
 }
 
-export const getTodolistsTC = (): AppThunk => async dispatch => {
+export const _getTodolistsTC = (): AppThunk => async dispatch => {
     try {
         const res = await todolistAPI.getTodolist()
         dispatch(setTodolistsAC(res.data))

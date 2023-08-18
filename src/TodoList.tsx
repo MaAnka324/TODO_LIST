@@ -31,9 +31,9 @@ type TodoListPropsType = {
 const TodoList: FC<TodoListPropsType> = React.memo((props): JSX.Element => {
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
-        dispatch(getTasksTC(props.todoListId))
-    }, [])
+    // useEffect(() => {
+    //     dispatch(getTasksTC(props.todoListId))
+    // }, [])
 
 
     const addTask = useCallback((title: string) => {

@@ -1,5 +1,10 @@
 
-import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsType} from "./todolists-reducer";
+import {
+    AddTodolistActionType,
+    ClearTodolistsDataType,
+    RemoveTodolistActionType,
+    SetTodolistsType
+} from "./todolists-reducer";
 import {ResultCode, TaskPriorities, TaskStatuses, TasksType, todolistAPI, UpdateTaskModel} from "../api/todolist-api";
 import {AppRootState, AppThunk} from "./store";
 import {RequestStatusType, setAppErrorAC, setLoadingStatusAC, SetLoadingStatusType} from "../app/app-reducer";
@@ -41,6 +46,7 @@ export type TasksActionType = RemoveTaskActionType
     | ReturnType<typeof setTasksAC>
     | ReturnType<typeof changeEntityTaskStatusAC>
     | SetLoadingStatusType
+    | ClearTodolistsDataType
 
 const initialState = {} as TasksStateType
 type InitialStateType = typeof initialState
@@ -112,6 +118,9 @@ export const tasksReducer = (state = initialState, action: TasksActionType): Ini
             ? {...t, entityTaskStatus: action.entityStatus}
             : t)
             return stateCopy
+        }
+        case "CLEAR-DATA": {
+            return {}
         }
         default:
             return state

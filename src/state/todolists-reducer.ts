@@ -33,6 +33,7 @@ export type TodolistsActionType = RemoveTodolistActionType
     | SetTodolistsType
     | SetLoadingStatusType
     | ReturnType<typeof changeEntityStatusAC>
+    | ClearTodolistsDataType
 
 const initialState = [] as Array<TodolistDomainType>
 type InitialStateType = typeof initialState
@@ -98,6 +99,9 @@ export const todolistsReducer = (state = initialState, action: TodolistsActionTy
                 ? {...tl, entityStatus: action.entityStatus}
                 : tl)
         }
+        case "CLEAR-DATA": {
+            return []
+        }
         default:
             return state
     }
@@ -151,7 +155,7 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
 }
 
 
-export type ClearTodolistsDataType = ReturnType<typeof setTodolistsAC>
+export type ClearTodolistsDataType = ReturnType<typeof clearTodolistsDataAC>
 
 export const clearTodolistsDataAC = () => {
     return {

@@ -9,6 +9,7 @@ import {
 import {LoginType} from "./Login";
 import {authAPI} from "../api/todolist-api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error.utils";
+import {clearTodolistsDataAC, ClearTodolistsDataType} from "../state/todolists-reducer";
 
 const initialState = {
     isLoggedIn: false
@@ -71,6 +72,7 @@ export const logOutTC = () => async (dispatch: Dispatch<ActionsType>) => {
         if(res.data.resultCode === 0) {
             dispatch(setIsLoggedInAC(false))
             dispatch(setLoadingStatusAC('succeeded'))
+            dispatch(clearTodolistsDataAC())
         } else {
             handleServerAppError(dispatch, res.data)
         }
@@ -81,6 +83,10 @@ export const logOutTC = () => async (dispatch: Dispatch<ActionsType>) => {
 }
 
 // types
-type ActionsType = ReturnType<typeof setIsLoggedInAC> | SetLoadingStatusType | SetErrorType | SetInitializedType
+type ActionsType = ReturnType<typeof setIsLoggedInAC>
+    | SetLoadingStatusType
+    | SetErrorType
+    | SetInitializedType
+    | ClearTodolistsDataType
 
 

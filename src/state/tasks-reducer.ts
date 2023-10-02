@@ -267,6 +267,7 @@ export const updateTasksTC = (todolistId: string, taskId: string, data: FlexType
                 if (res.data.resultCode === ResultCode.SUCCESS) {
                     dispatch(statusTaskAC(taskId, model, todolistId))
                     dispatch(setLoadingStatusAC('succeeded'))
+                    dispatch(changeEntityTaskStatusAC(todolistId, taskId, 'succeeded'))
                 } else {
                     if (res.data.messages.length) {
                         dispatch(setAppErrorAC(res.data.messages[0]))

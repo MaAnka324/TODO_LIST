@@ -65,6 +65,7 @@ export const Task = React.memo((props: TaskPropsType) => {
 
     const label = {inputProps: {'aria-label': 'Checkbox demo'}};
 
+    console.log(disable)
 
     return (
         <ListItem key={props.task.id}>
